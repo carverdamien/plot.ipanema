@@ -10,7 +10,11 @@ storage.csv: $(wildcard ~/storage/*/*/*/*)
 
 storage.i80.mysql-8.0.15.csv: storage.csv
 	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mysql 8.0.15'
+storage.i80.mysql-8.0.15.html: storage.i80.mysql-8.0.15.csv
+	./src/plotly/throughput.py -o $@ storage.i80.mysql-8.0.15.csv
 
+storage.i80.mysql-8.0.15.csv: storage.csv
+	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mysql 8.0.15'
 storage.i80.mysql-8.0.15.html: storage.i80.mysql-8.0.15.csv
 	./src/plotly/throughput.py -o $@ storage.i80.mysql-8.0.15.csv
 
