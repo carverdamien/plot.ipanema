@@ -15,4 +15,4 @@ clean:
 
 push:
 	git commit -am update
-	git push orgin master
+	git push origin master
