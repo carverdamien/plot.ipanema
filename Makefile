@@ -1,3 +1,6 @@
+STORAGE=$(wildcard ~/storage/*/*/*/*)
+FILES=$(shell find $(STORAGE))
+
 push: README.md
 	git commit -am update
 	git push origin master
@@ -5,8 +8,8 @@ push: README.md
 README.md: storage.i80.mysql-8.0.15.html storage.i80.mongo-4.1.8.html
 	./README.sh $^ > $@
 
-storage.csv: $(wildcard ~/storage/*/*/*/*)
-	./src/storage.py -o $@ $^
+storage.csv: $(FILES)
+	./src/storage.py -o $@ $(STORAGE)
 
 storage.i80.mongo-4.1.8.csv: storage.csv
 	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mongo v4.1.8'
