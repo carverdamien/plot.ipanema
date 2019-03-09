@@ -31,5 +31,10 @@ storage.i44.mongo-v3.6.3.csv: storage.csv
 storage.i44.mongo-v3.6.3.html: storage.i44.mongo-v3.6.3.csv
 	./src/plotly/throughput.py -o $@ $<
 
+storage.i44.mysql-5.7.25.csv: storage.csv
+	./src/select.py -i storage.csv -o $@ 'machine==i44' 'engine==mysql 5.7.25'
+storage.i44.mysql-5.7.25.html: storage.i44.mysql-5.7.25.csv
+	./src/plotly/throughput.py -o $@ $<
+
 clean:
 	rm -f *.csv
