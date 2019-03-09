@@ -2,7 +2,7 @@ push: README.md
 	git commit -am update
 	git push origin master
 
-README.md: storage.i80.mysql-8.0.15.html
+README.md: storage.i80.mysql-8.0.15.html storage.i80.mongo-4.1.8.html
 	./README.sh $^ > $@
 
 storage.csv: $(wildcard ~/storage/*/*/*/*)
