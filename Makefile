@@ -5,7 +5,7 @@ push: README.md
 	git commit -am update
 	git push origin master
 
-README.md: storage.i80.mysql-8.0.15.html storage.i80.mongo-4.1.8.html storage.i80.mysql-5.7.25.html storage.i44.mongo-v3.6.3.html
+README.md: storage.i80.mysql-8.0.15.html storage.i80.mongo-4.1.8.html storage.i80.mysql-5.7.25.html storage.i44.mongo-v3.6.3.html storage.i44.mysql-5.7.25.html
 	./README.sh $^ > $@
 
 storage.csv: $(FILES)
