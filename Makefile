@@ -9,7 +9,7 @@ storage.csv: $(wildcard ~/storage/*/*/*/*)
 	./src/storage.py -o $@ $^
 
 storage.i80.mongo-4.1.8.csv: storage.csv
-	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mongo 4.1.8'
+	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mongo v4.1.8'
 storage.i80.mongo-4.1.8.html: storage.i80.mongo-4.1.8.csv
 	./src/plotly/throughput.py -o $@ storage.i80.mongo-4.1.8.csv
 
