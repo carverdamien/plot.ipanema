@@ -25,7 +25,12 @@ README.md: $(ALL_HTML)
 index.html: $(ALL_HTML)
 	./index.sh $^ > $@
 
-push: index.html README.md $(ALL_HTML) $(ALL_CSV)
+PUSH=index.html README.md $(ALL_HTML) $(ALL_CSV)
+
+nopush: $(PUSH)
+	@echo done
+
+push: $(PUSH)
 	git add $^
 	git commit -m update
 	git push origin master
