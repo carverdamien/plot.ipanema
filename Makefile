@@ -1,40 +1,30 @@
-STORAGE=$(wildcard ~/storage/*/*/*/*)
+DIR_IN_STORAGE=$(wildcard ~/storage/*/*/*/*)
+STORAGE=storage.csv
 FILES=$(shell find $(STORAGE))
 
 push: README.md
 	git commit -am update
 	git push origin master
 
-README.md: storage.i80.mysql-8.0.15.html storage.i80.mongo-4.1.8.html storage.i80.mysql-5.7.25.html storage.i44.mongo-v3.6.3.html storage.i44.mysql-5.7.25.html
+README.md: $(ALL_HTML)
 	./README.sh $^ > $@
 
-storage.csv: $(FILES)
-	./src/storage.py -o $@ $(STORAGE)
+$(STORAGE): $(FILES)
+	./src/storage.py -o $@ $(DIR_IN_STORAGE)
 
-storage.i80.mongo-4.1.8.csv: storage.csv
-	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mongo v4.1.8'
-storage.i80.mongo-4.1.8.html: storage.i80.mongo-4.1.8.csv
-	./src/plotly/throughput.py -o $@ $<
+include functions.mk
 
-storage.i80.mysql-8.0.15.csv: storage.csv
-	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mysql 8.0.15'
-storage.i80.mysql-8.0.15.html: storage.i80.mysql-8.0.15.csv
-	./src/plotly/throughput.py -o $@ $<
+$(eval $(call func,i44,mongo,v4.1.8,throughput))
+#$(eval $(call func,i44,mongo,v3.6.3,throughput))
+$(eval $(call func,i44,mysql,8.0.15,throughput))
+$(eval $(call func,i44,mysql,5.7.25,throughput))
 
-storage.i80.mysql-5.7.25.csv: storage.csv
-	./src/select.py -i storage.csv -o $@ 'machine==i80' 'engine==mysql 5.7.25'
-storage.i80.mysql-5.7.25.html: storage.i80.mysql-5.7.25.csv
-	./src/plotly/throughput.py -o $@ $<
-
-storage.i44.mongo-v3.6.3.csv: storage.csv
-	./src/select.py -i storage.csv -o $@ 'machine==i44' 'engine==mongo v3.6.3'
-storage.i44.mongo-v3.6.3.html: storage.i44.mongo-v3.6.3.csv
-	./src/plotly/throughput.py -o $@ $<
-
-storage.i44.mysql-5.7.25.csv: storage.csv
-	./src/select.py -i storage.csv -o $@ 'machine==i44' 'engine==mysql 5.7.25'
-storage.i44.mysql-5.7.25.html: storage.i44.mysql-5.7.25.csv
-	./src/plotly/throughput.py -o $@ $<
+$(eval $(call func,i80,mongo,v4.1.8,throughput))
+#$(eval $(call func,i80,mongo,v3.6.3,throughput))
+$(eval $(call func,i80,mysql,8.0.15,throughput))
+$(eval $(call func,i80,mysql,5.7.25,throughput))
 
 clean:
 	rm -f *.csv
+
+.PHONY: clean all_html
