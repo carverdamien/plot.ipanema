@@ -39,6 +39,7 @@ def box_view(df, metric, xkey, keys, values):
         x = np.array(df[xkey][sel])
         y = np.array(df[metric][sel])
         name = ','.join(names)
+        name = pretty_label(name)
         color[name] = color.get(name, new_color())
         marker = dict(color=color[name])
         yield x, name, y, marker

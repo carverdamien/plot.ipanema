@@ -1,0 +1,7 @@
+{
+    "Linux,Linux":"linux",
+    "cfs_wwc scheduling policy,cfs_wwc scheduling policy":"cfs_wwc",
+    "cfs_wwc_flat scheduling policy,cfs_wwc_flat scheduling policy":"cfs_wwc_flat",
+    "ule scheduling policy,ule scheduling policy":"ule",
+    "ule_wwc scheduling policy,ule_wwc scheduling policy":"ule_wwc"
+}

@@ -38,6 +38,7 @@ def box_view(df, metric, xkey, keys, values):
         x = np.array(df[xkey][sel])
         y = np.array(df[metric][sel])
         name = ','.join(names)
+        name = pretty_label(name)
         color[name] = color.get(name, new_color())
         marker = dict(color=color[name])
         yield x, name, y, marker
@@ -61,7 +62,9 @@ def line_view(df, metric, xkey, keys, values):
             sel_x = np.logical_and(sel, df[xkey] == x)
             X.append(x)
             Y.append(np.mean(df[metric][sel_x]))
-        name = 'mean({})'.format(','.join(names))
+        name = ','.join(names)
+        name = pretty_label(name)
+        name = 'mean({})'.format(name)
         color[name] = color.get(name, new_color())
         marker = dict(color=color[name])
         yield X, name, Y, marker
