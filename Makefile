@@ -1,15 +1,10 @@
 DIR_IN_STORAGE=$(wildcard ~/storage/*/*/*/*)
+FILES_IN_STORAGE=$(shell find $(DIR_IN_STORAGE))
 STORAGE=storage.csv
-FILES=$(shell find $(STORAGE))
 
-push: README.md
-	git commit -am update
-	git push origin master
+default: push
 
-README.md: $(ALL_HTML)
-	./README.sh $^ > $@
-
-$(STORAGE): $(FILES)
+$(STORAGE): $(FILES_IN_STORAGE)
 	./src/storage.py -o $@ $(DIR_IN_STORAGE)
 
 include functions.mk
@@ -24,7 +19,10 @@ $(eval $(call func,i80,mongo,v4.1.8,throughput))
 $(eval $(call func,i80,mysql,8.0.15,throughput))
 $(eval $(call func,i80,mysql,5.7.25,throughput))
 
-clean:
-	rm -f *.csv
+README.md: $(ALL_HTML)
+	./README.sh $^ > $@
 
-.PHONY: clean all_html
+push: README.md
+	git add $(ALL_HTML) $(ALL_CSV)
+	git commit -m update
+	git push origin master
