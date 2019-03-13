@@ -3,8 +3,8 @@
 cat <<EOF
 # plot.ipanema
 
-$(for html in $@
+$(for f in $@
 do
-echo '*' "[${html}](${html})"
+echo '*' "${f}" "[html](${f}.html)" "[pdf](${f}.pdf)"
 done)
 EOF

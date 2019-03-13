@@ -10,9 +10,9 @@ cat <<EOF
 <body>
 <h1>plot.ipanema</h1>
 <ul>
-$(for html in $@
+$(for f in $@
 do
-echo '<li>' "<a href='${html}'>${html}</a>" '</li>'
+echo '<li>' "${f}" "[<a href='${f}.html'>html</a>]" "[<a href='${f}.pdf'>pdf</a>]" '</li>'
 done)
 </ul>
 </body>

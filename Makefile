@@ -23,13 +23,13 @@ $(eval $(call func,i80,mysql,8.0.15,95th_latency))
 $(eval $(call func,i80,mysql,5.7.25,throughput))
 $(eval $(call func,i80,mysql,5.7.25,95th_latency))
 
-README.md: $(ALL_HTML)
-	./README.sh $^ > $@
+README.md: $(ALL_HTML) $(ALL_PDF)
+	./README.sh $(ALL) > $@
 
-index.html: $(ALL_HTML)
-	./index.sh $^ > $@
+index.html: $(ALL_HTML) $(ALL_PDF)
+	./index.sh $(ALL) > $@
 
-PUSH=index.html README.md $(ALL_HTML) $(ALL_CSV)
+PUSH=index.html README.md $(ALL_HTML) $(ALL_CSV) $(ALL_PDF) $(STORAGE)
 
 nopush: $(PUSH)
 	@echo done
