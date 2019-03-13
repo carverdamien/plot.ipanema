@@ -11,17 +11,23 @@ include functions.mk
 
 $(eval $(call func,i44,mongo,v4.1.8,throughput))
 $(eval $(call func,i44,mongo,v4.1.8,95th_latency))
+$(eval $(call func,i44,mongo,v4.1.8,avg_latency))
 $(eval $(call func,i44,mysql,8.0.15,throughput))
 $(eval $(call func,i44,mysql,8.0.15,95th_latency))
+$(eval $(call func,i44,mysql,8.0.15,avg_latency))
 $(eval $(call func,i44,mysql,5.7.25,throughput))
 $(eval $(call func,i44,mysql,5.7.25,95th_latency))
+$(eval $(call func,i44,mysql,5.7.25,avg_latency))
 
 $(eval $(call func,i80,mongo,v4.1.8,throughput))
 $(eval $(call func,i80,mongo,v4.1.8,95th_latency))
+$(eval $(call func,i80,mongo,v4.1.8,avg_latency))
 $(eval $(call func,i80,mysql,8.0.15,throughput))
 $(eval $(call func,i80,mysql,8.0.15,95th_latency))
+$(eval $(call func,i80,mysql,8.0.15,avg_latency))
 $(eval $(call func,i80,mysql,5.7.25,throughput))
 $(eval $(call func,i80,mysql,5.7.25,95th_latency))
+$(eval $(call func,i80,mysql,5.7.25,avg_latency))
 
 README.md: $(ALL_HTML) $(ALL_PDF)
 	./README.sh $(ALL) > $@
