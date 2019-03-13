@@ -5,7 +5,7 @@ cat <<EOF
 <html lang=en>
 <head>
 <meta charset=utf-8>
-<title>blah</title>
+<title>plot.ipanema</title>
 </head>
 <body>
 <h1>plot.ipanema</h1>
