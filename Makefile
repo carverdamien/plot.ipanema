@@ -22,6 +22,9 @@ $(eval $(call func,i80,mysql,5.7.25,throughput))
 README.md: $(ALL_HTML)
 	./README.sh $^ > $@
 
+index.html: $(ALL_HTML)
+	./index.sh $^ > $@
+
 push: README.md $(ALL_HTML) $(ALL_CSV)
 	git add $^
 	git commit -m update
