@@ -41,6 +41,7 @@ nopush: $(PUSH)
 	@echo done
 
 push: $(PUSH)
+	git pull origin master
 	git add $^
 	git commit -m update
 	git push origin master
