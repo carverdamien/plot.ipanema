@@ -1,10 +1,10 @@
 DIR_IN_STORAGE=$(wildcard ~/storage/*/*/*/*)
 FILES_IN_STORAGE=$(shell find $(DIR_IN_STORAGE))
-STORAGE=storage.csv
+SYSBENCH_STORAGE=sysbench.csv
 
 default: push
 
-$(STORAGE): $(FILES_IN_STORAGE)
+$(SYSBENCH_STORAGE): $(FILES_IN_STORAGE)
 	./src/storage.py -t sysbench -o $@ $(DIR_IN_STORAGE)
 
 include functions.mk
@@ -35,7 +35,7 @@ README.md: $(ALL_HTML) $(ALL_PDF)
 index.html: $(ALL_HTML) $(ALL_PDF)
 	./index.sh $(ALL) > $@
 
-PUSH=index.html README.md $(ALL_HTML) $(ALL_CSV) $(ALL_PDF) $(STORAGE)
+PUSH=index.html README.md $(ALL_HTML) $(ALL_CSV) $(ALL_PDF) $(SYSBENCH_STORAGE)
 
 nopush: $(PUSH)
 	@echo done
