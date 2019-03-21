@@ -2,7 +2,7 @@
 
 import argparse, os, logging
 import pandas as pd
-from parser import Oltp
+import parser
 from common import *
 
 description="""
@@ -11,15 +11,17 @@ Goes through input Directories and parses files in ./data/ to produce and store 
 """
 
 def parseCmdLine():
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('inputDirectories', nargs='+',
-                        help='Directories to use as input')
-    parser.add_argument('-o', '--output',
-                        required=True,
-                        help='Output datafile')
-    parser.add_argument('-v', '--verbose', action='count')
-
-    return parser.parse_args()
+    p = argparse.ArgumentParser(description=description)
+    p.add_argument('inputDirectories', nargs='+',
+                   help='Directories to use as input')
+    p.add_argument('-o', '--output',
+                   required=True,
+                   help='Output datafile')
+    p.add_argument('-t', '--type',
+                   required=True,
+                   help='Type of Benchmark [batch|sysbench]')
+    p.add_argument('-v', '--verbose', action='count')
+    return p.parse_args()
 
 def save(output, data):
     _, ext = os.path.splitext(output)
@@ -48,16 +50,22 @@ def main():
         level = logging.WARN
     elif args.verbose == 2:
         level = logging.INFO
-    elif args.verbose == 3:
+    else:
         level = logging.DEBUG
     logging.basicConfig(format='[%(levelname)s] %(message)s', level=level)
 
-    oltp_parser = Oltp()
+    parsers = {
+        'sysbench' : parser.Sysbench(),
+        'batch' : parser.Batch(),
+    }
+    if args.type not in parsers.keys():
+        raise Exception('Type must be in {}'.format(parsers.keys()))
+    p = parsers[args.type]
     data = []
     for d in args.inputDirectories:
         try:
             logging.info("Parsing {}...".format(d))
-            data.append(oltp_parser.parse(d))
+            data.append(p.parse(d))
             logging.info("Parsing {}... Done".format(d))
         except ParsingError as e:
             logging.error("Parsing {} failed. Ignoring.".format(d))

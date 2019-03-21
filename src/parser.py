@@ -7,7 +7,7 @@ class Batch:
             with open(path, 'r') as fp:
                 return self._parse_batch_file_or_path
         else:
-            return._parse_batch_file(fp)
+            return self._parse_batch_file(fp)
     def _parse_batch_file(self, fp):
         return json.load(fp)
     def parse(self, dirPath):

@@ -5,7 +5,7 @@ STORAGE=storage.csv
 default: push
 
 $(STORAGE): $(FILES_IN_STORAGE)
-	./src/storage.py -o $@ $(DIR_IN_STORAGE)
+	./src/storage.py -t sysbench -o $@ $(DIR_IN_STORAGE)
 
 include functions.mk
 
