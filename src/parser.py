@@ -1,7 +1,41 @@
-import os, logging
+import os, logging, json
 from common import *
 
-class Oltp:
+class Batch:
+    def _parse_batch_file_or_path(self, path=None, fp=None):
+        if fp is None:
+            with open(path, 'r') as fp:
+                return self._parse_batch_file_or_path
+        else:
+            return._parse_batch_file(fp)
+    def _parse_batch_file(self, fp):
+        return json.load(fp)
+    def parse(self, dirPath):
+        try:
+            values = []
+            with open(dirPath+"/machine") as fp:
+                machine = fp.read().strip()
+            with open(dirPath+"/batch") as fp:
+                batch = fp.read().strip()
+            with open(dirPath+"/scheduler") as fp:
+                scheduler = fp.read().strip()
+            with open(dirPath+"/kernel") as fp:
+                kernel = fp.read().strip()
+            for f in os.listdir(dirPath+"/data/"):
+                p = dirPath+"/data/"+f
+                values.extend(self._parse_oltp_file_or_path(path=p))
+            return {
+                'machine': machine,
+                'batch':  batch,
+                'scheduler': scheduler,
+                'kernel': kernel,
+                'data': values,
+            }
+        except FileNotFoundError as e:
+            logging.error("Batch parser did not find {} file.".format(e.filename))
+            raise ParsingError()
+        
+class Sysbench:
 
     def _parse_oltp_file_or_path(self, path=None, fp=None):
         if fp:
@@ -67,5 +101,5 @@ class Oltp:
                 'data': values
             }
         except FileNotFoundError as e:
-            logging.error("Oltp parser did not find {} file.".format(e.filename))
+            logging.error("Sysbench parser did not find {} file.".format(e.filename))
             raise ParsingError()
