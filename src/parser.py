@@ -2,14 +2,21 @@ import os, logging, json
 from common import *
 
 class Batch:
-    def _parse_batch_file_or_path(self, path=None, fp=None):
+    def _parse_file_or_path(self, path=None, fp=None):
         if fp is None:
             with open(path, 'r') as fp:
-                return self._parse_batch_file_or_path
+                return self._parse_file(fp)
         else:
-            return self._parse_batch_file(fp)
-    def _parse_batch_file(self, fp):
-        return json.load(fp)
+            return self._parse_file(fp)
+    def _parse_file(self, fp):
+        values = []
+        try:
+            values = json.load(fp)
+            if isinstance(values, dict):
+                values = [values]
+        except json.decoder.JSONDecodeError:
+            pass
+        return values
     def parse(self, dirPath):
         try:
             values = []
@@ -23,7 +30,7 @@ class Batch:
                 kernel = fp.read().strip()
             for f in os.listdir(dirPath+"/data/"):
                 p = dirPath+"/data/"+f
-                values.extend(self._parse_oltp_file_or_path(path=p))
+                values.extend(self._parse_file_or_path(path=p))
             return {
                 'machine': machine,
                 'batch':  batch,
@@ -37,15 +44,15 @@ class Batch:
         
 class Sysbench:
 
-    def _parse_oltp_file_or_path(self, path=None, fp=None):
+    def _parse_file_or_path(self, path=None, fp=None):
         if fp:
-            return self._parse_oltp_file(fp)
+            return self._parse_file(fp)
         if path:
             with open(path, 'r') as fp:    
-                return self._parse_oltp_file(fp)
+                return self._parse_file(fp)
         raise TypeError
 
-    def _parse_oltp_file(self, fp):
+    def _parse_file(self, fp):
         values = []
         for l in fp:
             s = l.strip().split()
@@ -89,7 +96,7 @@ class Sysbench:
                 kernel = fp.read().strip()
             for f in os.listdir(dirPath+"/data/"):
                 p = dirPath+"/data/"+f
-                values.extend(self._parse_oltp_file_or_path(path=p))
+                values.extend(self._parse_file_or_path(path=p))
 
             return {
                 'machine': machine,
