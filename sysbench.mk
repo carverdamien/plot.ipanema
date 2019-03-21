@@ -1,6 +1,10 @@
 SYSBENCH_STORAGE=sysbench.csv
 PUSH+=$(SYSBENCH_STORAGE)
 
+METRICS=min_latency max_latency avg_latency 95th_latency throughput duration
+include metric.mk
+$(foreach m,$(METRICS),$(eval $(call metric,$(m))))
+
 $(SYSBENCH_STORAGE): $(FILES_IN_STORAGE)
 	./src/storage.py -t sysbench -o $@ $(DIR_IN_STORAGE)
 
@@ -9,11 +13,11 @@ define sysbench
 $1/$2/$3/sysbench.csv: $$(SYSBENCH_STORAGE)
 	@mkdir -p $$(dir $$@)
 	./src/select.py -i $$< -o $$@ 'machine==$1' 'engine==$2 $3'
-$(foreach metric,throughput 95th_latency avg_latency,
-$1/$2/$3/$(metric).html: $1/$2/$3/sysbench.csv
-	./src/plotly/$(metric).py -o $$@ $$<
-$1/$2/$3/$(metric).pdf: $1/$2/$3/sysbench.csv
-	./src/seaborn/$(metric).py -o $$@ $$<
+$(foreach metric,$(METRICS),
+$1/$2/$3/$(metric).html: $1/$2/$3/sysbench.csv sysbench.json ./src/plotly/$(metric).py
+	./src/plotly/$(metric).py -c sysbench.json -o $$@ $$<
+$1/$2/$3/$(metric).pdf: $1/$2/$3/sysbench.csv sysbench.json ./src/seaborn/$(metric).py
+	./src/seaborn/$(metric).py -c sysbench.json -o $$@ $$<
 ALL+=$1/$2/$3/$(metric)
 ALL_HTML+=$1/$2/$3/$(metric).html
 ALL_PDF+=$1/$2/$3/$(metric).pdf

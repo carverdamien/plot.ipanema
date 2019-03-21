@@ -1,0 +1,11 @@
+{
+    "xkey" : "clients",
+    "keys" : [
+        "machine",
+        "kernel",
+        "engine",
+        "engine_sched",
+        "client",
+        "client_sched"
+    ]
+}

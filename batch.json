@@ -1,0 +1,9 @@
+{
+    "xkey" : "tasks",
+    "keys" : [
+        "machine",
+        "kernel",
+        "batch",
+        "scheduler"
+    ]
+}

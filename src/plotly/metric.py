@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 from common import *
-import argparse, logging, itertools, sys, os
+import argparse, logging, itertools, sys, os, json
 import pandas as pd
 import numpy as np
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import plotly.graph_objs as go
 
 description="""
-Plot utility for sysbench OLTP:
+Plot utility:
 Loads a Dataframe and plots a view of the data.
 """
 
@@ -19,6 +19,9 @@ def parseCmdLine():
     parser.add_argument('-o', '--output',
                         required=True,
                         help='Output file to store the plot')
+    parser.add_argument('-c', '--config',
+                        required=True,
+                        help='xkey and keys config.json')
     parser.add_argument('-v', '--verbose', action='count')
 
     return parser.parse_args()
@@ -77,16 +80,9 @@ def filterout_if_single_value(keys, values):
     keys = [k for k in keys if k not in keys_ignored]
     return keys, values, keys_ignored, values_ignored
 
-def save(metric, output, df):
-    xkey = 'clients'
-    keys = [
-        'machine',
-        'kernel',
-        'engine',
-        'engine_sched',
-        'client',
-        'client_sched',
-    ]
+def save(config, metric, output, df):
+    xkey = config['xkey']
+    keys = config['keys']
     assert(xkey not in keys)
     values = [list(np.unique(df[k])) for k in keys]
     keys, values, keys_ignored, values_ignored = filterout_if_single_value(keys, values)
@@ -149,7 +145,12 @@ def main():
     logging.info('metric={}'.format(metric))
     
     df = pd.read_csv(args.inputFile)
-    save(metric, args.output, df)
+    if(len(df) == 0):
+        logging.error('Empty dataframe')
+    else:
+        with open(args.config) as f:
+            config = json.load(f)
+            save(config, metric, args.output, df)
 
 if __name__ == '__main__':
     main()
