@@ -1,5 +1,5 @@
 # MACHINE ENGINE ENGINE_VERSION METRIC
-define func
+define sysbench
 $1/$2/$3/sysbench.csv: $$(SYSBENCH_STORAGE)
 	@mkdir -p $$(dir $$@)
 	./src/select.py -i $$< -o $$@ 'machine==$1' 'engine==$2 $3'
