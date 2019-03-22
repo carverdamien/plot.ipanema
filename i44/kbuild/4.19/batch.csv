@@ -1,77 +1,48 @@
 ,Unnamed: 0,batch,kernel,machine,scheduler,tasks,time
-5914,5914,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,64.0,49.92
-5915,5915,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,32.0,63.86
-5916,5916,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,512.0,48.92
-5917,5917,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,32.0,63.38
-5918,5918,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,128.0,49.55
-5919,5919,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,512.0,50.07
-5920,5920,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,128.0,49.08
-5921,5921,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,128.0,49.42
-5922,5922,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,256.0,49.43
-5923,5923,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,64.0,50.46
-5924,5924,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,256.0,50.79
-5925,5925,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,128.0,47.58
-5926,5926,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,256.0,49.2
-5927,5927,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,32.0,68.83
-5928,5928,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,256.0,49.18
-5929,5929,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512.0,49.61
-5930,5930,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,64.0,50.24
-5931,5931,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,128.0,49.01
-5932,5932,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512.0,49.23
-5933,5933,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,32.0,67.96
-5934,5934,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512.0,49.51
-5935,5935,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,128.0,49.03
-5936,5936,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,64.0,50.38
-5937,5937,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,256.0,48.83
-5938,5938,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,256.0,49.11
-5939,5939,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,32.0,70.01
-5940,5940,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,64.0,49.66
-5941,5941,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128.0,48.72
-5942,5942,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128.0,49.97
-5943,5943,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512.0,49.31
-5944,5944,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,32.0,70.75
-5945,5945,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512.0,49.74
-5946,5946,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,64.0,49.82
-5947,5947,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128.0,49.13
-5948,5948,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512.0,49.27
-5949,5949,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule_wwc scheduling policy,128.0,49.49
-5950,5950,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,512.0,49.26
-5951,5951,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,64.0,51.02
-5952,5952,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,256.0,49.17
-5953,5953,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,256.0,48.73
-5954,5954,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128.0,49.63
-5955,5955,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,32.0,63.42
-5956,5956,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128.0,49.22
-5957,5957,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128.0,49.75
-5958,5958,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,64.0,50.54
-5959,5959,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,512.0,49.06
-5960,5960,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,32.0,62.29
-5962,5960,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512.0,49.23
-5963,5961,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,32.0,67.96
-5964,5962,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512.0,49.51
-5965,5963,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,128.0,49.03
-5966,5964,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,64.0,50.38
-5967,5965,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,256.0,48.83
-5968,5966,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,256.0,49.11
-5969,5967,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,32.0,70.01
-5970,5968,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,64.0,49.66
-5971,5969,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128.0,48.72
-5972,5970,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128.0,49.97
-5973,5971,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512.0,49.31
-5974,5972,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,32.0,70.75
-5975,5973,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512.0,49.74
-5976,5974,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,64.0,49.82
-5977,5975,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128.0,49.13
-5978,5976,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512.0,49.27
-5979,5977,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule_wwc scheduling policy,128.0,49.49
-5980,5978,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,512.0,49.26
-5981,5979,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,64.0,51.02
-5982,5980,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,256.0,49.17
-5983,5981,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,256.0,48.73
-5984,5982,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128.0,49.63
-5985,5983,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,32.0,63.42
-5986,5984,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128.0,49.22
-5987,5985,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128.0,49.75
-5988,5986,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,64.0,50.54
-5989,5987,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,512.0,49.06
-5990,5988,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,32.0,62.29
+5962,5962,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,64,49.92
+5963,5963,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,32,63.86
+5964,5964,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,512,48.92
+5965,5965,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,32,63.38
+5966,5966,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,128,49.55
+5967,5967,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,512,50.07
+5968,5968,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,128,49.08
+5969,5969,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,128,49.42
+5970,5970,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,256,49.43
+5971,5971,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,64,50.46
+5972,5972,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc scheduling policy,256,50.79
+5973,5973,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,128,47.58
+5974,5974,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,256,49.2
+5975,5975,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,32,68.83
+5976,5976,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,256,49.18
+5977,5977,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512,49.61
+5978,5978,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,64,50.24
+5979,5979,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,128,49.01
+5980,5980,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512,49.23
+5981,5981,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,32,67.96
+5982,5982,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,512,49.51
+5983,5983,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,128,49.03
+5984,5984,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,Linux,64,50.38
+5985,5985,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,256,48.83
+5986,5986,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,256,49.11
+5987,5987,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,32,70.01
+5988,5988,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,64,49.66
+5989,5989,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128,48.72
+5990,5990,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128,49.97
+5991,5991,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512,49.31
+5992,5992,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,32,70.75
+5993,5993,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512,49.74
+5994,5994,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,64,49.82
+5995,5995,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,128,49.13
+5996,5996,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule scheduling policy,512,49.27
+5997,5997,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,ule_wwc scheduling policy,128,49.49
+5998,5998,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,512,49.26
+5999,5999,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,64,51.02
+6000,6000,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,256,49.17
+6001,6001,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,256,48.73
+6002,6002,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128,49.63
+6003,6003,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,32,63.42
+6004,6004,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128,49.22
+6005,6005,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,128,49.75
+6006,6006,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,64,50.54
+6007,6007,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,512,49.06
+6008,6008,kbuild 4.19,4.19.0-ipanema-gab29e103e36b,i44,cfs_wwc_flat scheduling policy,32,62.29
