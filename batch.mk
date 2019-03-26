@@ -26,7 +26,7 @@ ALL_CSV+=$1/$2/$3/batch.csv
 endef
 
 $(eval $(call batch,i44,hackbench,1.0-3))
-$(eval $(call batch,i44,kbuild,v.19))
+$(eval $(call batch,i44,kbuild,4.19))
 
 $(eval $(call batch,i80,hackbench,1.0-3))
 $(eval $(call batch,i80,kbuild,4.19))
