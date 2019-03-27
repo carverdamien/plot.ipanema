@@ -2,9 +2,9 @@ DIR_IN_BATCH_STORAGE=$(foreach m,i44 i80,$(foreach b,kbuild hackbench,$(wildcard
 BATCH_STORAGE=batch.csv
 PUSH+=$(BATCH_STORAGE)
 
-METRICS=time
+METRICS=time nr_migrations nr_sleep nr_switches nr_wakeup
 include metric.mk
-$(eval $(foreach m,$(METRICS),$(call metric,$(m))))
+$(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
 $(BATCH_STORAGE):
 	./src/storage.py -t batch -o $@.tmp.csv $(DIR_IN_BATCH_STORAGE)
