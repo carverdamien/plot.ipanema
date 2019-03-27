@@ -1,3 +1,4 @@
+DIR_IN_SYSBENCH_STORAGE=$(foreach m,i44 i80,$(foreach b,mongo mysql,$(wildcard ~/storage/$m/$b/*/*)))
 SYSBENCH_STORAGE=sysbench.csv
 PUSH+=$(SYSBENCH_STORAGE)
 
@@ -5,8 +6,8 @@ METRICS=min_latency max_latency avg_latency 95th_latency throughput duration
 include metric.mk
 $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
-$(SYSBENCH_STORAGE): $(FILES_IN_STORAGE)
-	./src/storage.py -t sysbench -o $@ $(DIR_IN_STORAGE)
+$(SYSBENCH_STORAGE):
+	./src/storage.py -t sysbench -o $@ $(DIR_IN_SYSBENCH_STORAGE)
 
 # MACHINE ENGINE ENGINE_VERSION
 define sysbench

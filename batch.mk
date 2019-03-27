@@ -1,3 +1,4 @@
+DIR_IN_BATCH_STORAGE=$(foreach m,i44 i80,$(foreach b,kbuild hackbench,$(wildcard ~/storage/$m/$b/*/*)))
 BATCH_STORAGE=batch.csv
 PUSH+=$(BATCH_STORAGE)
 
@@ -5,8 +6,8 @@ METRICS=time
 include metric.mk
 $(eval $(foreach m,$(METRICS),$(call metric,$(m))))
 
-$(BATCH_STORAGE): $(FILES_IN_STORAGE)
-	./src/storage.py -t batch -o $@ $(DIR_IN_STORAGE)
+$(BATCH_STORAGE):
+	./src/storage.py -t batch -o $@ $(DIR_IN_BATCH_STORAGE)
 
 # MACHINE ENGINE ENGINE_VERSION
 define batch

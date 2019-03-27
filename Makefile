@@ -1,5 +1,3 @@
-DIR_IN_STORAGE=$(wildcard ~/storage/*/*/*/*)
-FILES_IN_STORAGE=
 PUSH?=
 ALL?=
 ALL_HTML?=
@@ -8,12 +6,6 @@ ALL_PDF?=
 
 default: push
 
-files_in_storage.mk:
-	@echo Building $@
-	@echo FILES_IN_STORAGE=$$(find $(DIR_IN_STORAGE)) > $@
-.PHONY: files_in_storage.mk
-
-include files_in_storage.mk
 include sysbench.mk
 include batch.mk
 
