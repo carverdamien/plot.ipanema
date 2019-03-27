@@ -1,22 +1,14 @@
-import os, logging, json
+import os, logging, json, parse
 from common import *
 
 class Batch:
-    def _parse_file_or_path(self, path=None, fp=None):
-        if fp is None:
-            with open(path, 'r') as fp:
-                return self._parse_file(fp)
-        else:
-            return self._parse_file(fp)
-    def _parse_file(self, fp):
-        values = []
-        try:
-            values = json.load(fp)
-            if isinstance(values, dict):
-                values = [values]
-        except json.decoder.JSONDecodeError:
-            pass
-        return values
+    def _parse_path(self, path):
+        st_ctime = os.stat(path).st_ctime
+        with open(path, 'r') as fp:
+            data = json.load(fp)
+            data['st_ctime'] = st_ctime
+            data['file'] = path
+            return data
     def parse(self, dirPath):
         try:
             values = []
@@ -30,7 +22,11 @@ class Batch:
                 kernel = fp.read().strip()
             for f in os.listdir(dirPath+"/data/"):
                 p = dirPath+"/data/"+f
-                values.extend(self._parse_file_or_path(path=p))
+                try:
+                    values.append(self._parse_path(path=p))
+                except json.decoder.JSONDecodeError as e:
+                    logging.error("Batch parser failed on file {}.".format(p))
+                    pass
             return {
                 'machine': machine,
                 'batch':  batch,
@@ -43,41 +39,29 @@ class Batch:
             raise ParsingError()
         
 class Sysbench:
+    SYSBENCH_EXPECTED_OUTPUT="""
+Number of threads:{:s}{clients}
+{}
+Throughput:
+    events/s (eps):{:s}{throughput}
+    time elapsed:{:s}{duration}s
+    total number of events:{:s}{events}
 
-    def _parse_file_or_path(self, path=None, fp=None):
-        if fp:
-            return self._parse_file(fp)
-        if path:
-            with open(path, 'r') as fp:    
-                return self._parse_file(fp)
-        raise TypeError
-
-    def _parse_file(self, fp):
-        values = []
-        for l in fp:
-            s = l.strip().split()
-            if 'Number of threads:' in l:
-                if 'res' in locals():
-                    if len(res) == 8:
-                        values.append(res)
-                res = { 'clients': int(s[3]),
-                        'file':    fp.name }
-            elif 'eps' in l:
-                res['throughput'] = float(s[2])
-            elif 'min:' in l:
-                res['min_latency'] = float(s[1])
-            elif 'avg:' in l:
-                res['avg_latency'] = float(s[1])
-            elif 'max:' in l:
-                res['max_latency'] = float(s[1])
-            elif '95th percentile:' in l:
-                res['95th_latency'] = float(s[2])
-            elif 'time elapsed:' in l:
-                res['duration'] = float(s[2][:-1])
-        if 'res' in locals():
-            if len(res) == 8:
-                values.append(res)
-        return values
+Latency (ms):
+         min:{:s}{min_latency}
+         avg:{:s}{avg_latency}
+         max:{:s}{max_latency}
+         95th percentile:{:s}{p95th_latency}
+         sum:{:s}{sum_latency}
+"""
+    def _parse_path(self, path):
+        st_ctime = os.stat(path).st_ctime
+        with open(path,'r') as fp:
+            r = parse.search(self.SYSBENCH_EXPECTED_OUTPUT,fp.read())
+            data = r.named
+            data['file'] = path
+            data['st_ctime'] = st_ctime
+            return data
 
     def parse(self, dirPath):
         try:
@@ -96,8 +80,11 @@ class Sysbench:
                 kernel = fp.read().strip()
             for f in os.listdir(dirPath+"/data/"):
                 p = dirPath+"/data/"+f
-                values.extend(self._parse_file_or_path(path=p))
-
+                try:
+                    values.append(self._parse_path(path=p))
+                except AttributeError as e:
+                    logging.error("Sysbench parser failed on file {}.".format(p))
+                    pass
             return {
                 'machine': machine,
                 'engine':  engine,
