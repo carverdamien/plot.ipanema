@@ -7,7 +7,9 @@ include metric.mk
 $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
 $(SYSBENCH_STORAGE):
-	./src/storage.py -t sysbench -o $@ $(DIR_IN_SYSBENCH_STORAGE)
+	./src/storage.py -t sysbench -o $@.tmp.csv $(DIR_IN_SYSBENCH_STORAGE)
+	if ! diff -q $@.tmp.csv $@; then mv $@.tmp.csv $@; fi
+	rm -f $@.tmp.csv
 
 # MACHINE ENGINE ENGINE_VERSION
 define sysbench

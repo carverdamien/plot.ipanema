@@ -7,7 +7,9 @@ include metric.mk
 $(eval $(foreach m,$(METRICS),$(call metric,$(m))))
 
 $(BATCH_STORAGE):
-	./src/storage.py -t batch -o $@ $(DIR_IN_BATCH_STORAGE)
+	./src/storage.py -t batch -o $@.tmp.csv $(DIR_IN_BATCH_STORAGE)
+	if ! diff -q $@.tmp.csv $@; then mv $@.tmp.csv $@; fi
+	rm -f $@.tmp.csv
 
 # MACHINE ENGINE ENGINE_VERSION
 define batch
