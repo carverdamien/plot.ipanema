@@ -1,4 +1,4 @@
-DIR_IN_BATCH_STORAGE=$(foreach m,i44 i80,$(foreach b,kbuild hackbench,$(wildcard ~/storage/$m/$b/*/*)))
+DIR_IN_BATCH_STORAGE=$(foreach m,i80,$(foreach b,kbuild hackbench,$(wildcard ~/storage/$m/$b/*/*)))
 BATCH_STORAGE=batch.csv
 PUSH+=$(BATCH_STORAGE)
 

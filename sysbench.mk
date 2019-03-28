@@ -1,4 +1,4 @@
-DIR_IN_SYSBENCH_STORAGE=$(foreach m,i44 i80,$(foreach b,mongo mysql,$(wildcard ~/storage/$m/$b/*/*)))
+DIR_IN_SYSBENCH_STORAGE=$(foreach m,i80,$(foreach b,mongo mysql,$(wildcard ~/storage/$m/$b/*/*)))
 SYSBENCH_STORAGE=sysbench.csv
 PUSH+=$(SYSBENCH_STORAGE)
 
