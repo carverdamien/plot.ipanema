@@ -1,6 +1,48 @@
 import os, logging, json, parse
 from common import *
 
+class SchedMonitor:
+    SCHED_MONITOR_EXPECTED_OUTPUT = {
+        'sched' : """{sched_ns}""",
+        'idle'    : """{event_name}: {event_ns} ns ({event_hits} hits)""",
+        'fair'    : """{:s}{event_name}: {event_ns} ns ({event_hits} hits)""",
+        'ipanema' : """{:s}{event_name}: {event_ns} ns ({event_hits} hits)""",
+    }
+    def _parse_one_cpu(self, path, expected_output):
+        with open(path, 'r') as fp:
+            data = {}
+            for r in parse.findall(expected_output,fp.read()):
+                if 'sched_ns' in r.named:
+                    return { 'sched_ns': int(r.named['sched_ns']) }
+                event_name = r.named['event_name']
+                event_ns   = int(r.named['event_ns'])
+                event_hits = int(r.named['event_hits'])
+                data.update({
+                    '{}.ns'.format(r.named['event_name']) : event_ns,
+                    '{}.hits'.format(r.named['event_name']) : event_hits,
+                })
+            return data
+        raise ParsingError()
+    def parse(self, dirPath):
+        all_data = {}
+        for subsystem in self.SCHED_MONITOR_EXPECTED_OUTPUT:
+            expected_output = self.SCHED_MONITOR_EXPECTED_OUTPUT[subsystem]
+            path = "/".join([dirPath, subsystem])
+            if not os.path.isdir(path):
+                logging.warn('SchedMonitor parser did not find {}'.format(path))
+                continue
+            data = {}
+            for cpu in os.listdir(path):
+                filepath = "/".join([path, cpu])
+                cpu = self._parse_one_cpu(filepath, expected_output)
+                for k in cpu:
+                    data[k] = data.get(k, 0) + cpu[k]
+            all_data.update({
+                '{}.{}'.format(subsystem,k) : data[k]
+                for k in data
+            })
+        return all_data
+
 class SchedDebug:
     SCHED_DEBUG_EXPECTED_OUTPUT="""
 cpu#{}, {} MHz
@@ -43,6 +85,9 @@ cpu#{}, {} MHz
                 continue
             p = dirPath+"/"+f
             values.append(self._parse_path(p))
+        if len(values) == 0:
+            logging.warn('SchedDebug parser did not find sched_debug files in {}.'.format(dirPath))
+            return {}
         if len(values) != 2:
             logging.error('SchedDebug did not find exactly two dumps in {}.'.format(dirPath))
             return {}
@@ -76,6 +121,7 @@ class Batch:
                 try:
                     data = self._parse_path(path=p)
                     data.update(SchedDebug().parse(dirPath+"/log/"+f))
+                    data.update(SchedMonitor().parse(dirPath+"/log/"+f+"/sched_monitor"))
                     values.append(data)
                 except json.decoder.JSONDecodeError as e:
                     logging.error("Batch parser failed on file {}.".format(p))
@@ -136,6 +182,7 @@ Latency (ms):
                 try:
                     data = self._parse_path(path=p)
                     data.update(SchedDebug().parse(dirPath+"/log/"+f))
+                    data.update(SchedMonitor().parse(dirPath+"/log/"+f+"/sched_monitor"))
                     values.append(data)
                 except AttributeError as e:
                     logging.error("Sysbench parser failed on file {}.".format(p))
