@@ -15,7 +15,7 @@ $(SYSBENCH_STORAGE):
 define sysbench
 $1/$2/$3/sysbench.csv: $$(SYSBENCH_STORAGE)
 	@mkdir -p $$(dir $$@)
-	./src/select.py -i $$< -o $$@ 'machine==$1' 'engine==$2 $3' 'st_mtime>=1553727600'
+	./src/select.py -i $$< -o $$@ 'machine==$1' 'engine==$2 $3' 'st_mtime>=1553698800'
 $(foreach metric,$(METRICS),
 $1/$2/$3/$(metric).html: $1/$2/$3/sysbench.csv sysbench.json ./src/plotly/$(metric).py
 	./src/plotly/$(metric).py -c sysbench.json -o $$@ $$<
