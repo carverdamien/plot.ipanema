@@ -28,9 +28,9 @@ ALL_CSV+=$1/$2/$3/sysbench.csv
 )
 endef
 
-$(eval $(call sysbench,i44,mongo,v4.1.8))
-$(eval $(call sysbench,i44,mysql,8.0.15))
-$(eval $(call sysbench,i44,mysql,5.7.25))
+#$(eval $(call sysbench,i44,mongo,v4.1.8))
+#$(eval $(call sysbench,i44,mysql,8.0.15))
+#$(eval $(call sysbench,i44,mysql,5.7.25))
 
 $(eval $(call sysbench,i80,mongo,v4.1.8))
 $(eval $(call sysbench,i80,mysql,8.0.15))
