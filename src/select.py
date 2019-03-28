@@ -12,7 +12,7 @@ Loads a Dataframe and select rows to create a smaller Dataframe.
 def parseCmdLine():
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('selectors', nargs='+',
-                        help='a list of KEY==VALUE')
+                        help='a list of KEY==VALUE or KEY>=VALUE')
     parser.add_argument('-i','--input',
                         required=True,
                         help='dataframe to use as input')
@@ -38,10 +38,16 @@ def main():
 
     df = pd.read_csv(args.input)
     sel = np.ones(len(df), dtype='bool')
-    # TODO: add != < <= > >= logical_or options.
-    for op, key, value in [[op]+selector.split(op) for selector in args.selectors for op in ['=='] if op in selector]:
-        logging.info('Applying "{}"=="{}"'.format(key, value))
-        sel = np.logical_and(sel, df[key] == value)
+    # TODO: add logical_or options.
+    OP = {
+        '==':lambda sel,key,value: np.logical_and(sel, df[key] == value),
+        '!=':lambda sel,key,value: np.logical_and(sel, df[key] != value),
+        '<=':lambda sel,key,value: np.logical_and(sel, df[key] <= float(value)),
+        '>=':lambda sel,key,value: np.logical_and(sel, df[key] >= float(value)),
+    }
+    for op, key, value in [[op]+selector.split(op) for selector in args.selectors for op in OP if op in selector]:
+        logging.info('Applying "{}"{}"{}"'.format(key, op, value))
+        sel = OP[op](sel,key,value)
     df = df.loc[sel]
     df.to_csv(args.output)
 
