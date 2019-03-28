@@ -15,7 +15,7 @@ $(BATCH_STORAGE):
 define batch
 $1/$2/$3/batch.csv: $$(BATCH_STORAGE)
 	@mkdir -p $$(dir $$@)
-	./src/select.py -i $$< -o $$@ 'machine==$1' 'batch==$2 $3' 'st_mtime>=1553698800'
+	./src/select.py -i $$< -o $$@ 'machine==$1' 'batch==$2 $3' 'st_mtime>=1553709600'
 $(foreach metric,$(METRICS),
 $1/$2/$3/$(metric).html: $1/$2/$3/batch.csv batch.json ./src/plotly/$(metric).py
 	./src/plotly/$(metric).py -c batch.json -o $$@ $$<
