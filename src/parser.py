@@ -3,30 +3,39 @@ from common import *
 
 class SchedMonitor:
     SCHED_MONITOR_EXPECTED_OUTPUT = {
-        'sched' : """{sched_ns}""",
-        'idle'    : """{event_name}: {event_ns} ns ({event_hits} hits)""",
+        'sched' : """{total_ns}""",
+        'idle'    : """Idle: {total_ns} ns ({total_hits} hits)""",
         'fair'    : """{:s}{event_name}: {event_ns} ns ({event_hits} hits)""",
         'ipanema' : """{:s}{event_name}: {event_ns} ns ({event_hits} hits)""",
     }
-    def _parse_one_cpu(self, path, expected_output):
+    def _parse_one_cpu(self, path, subsystem):
+        expected_output = self.SCHED_MONITOR_EXPECTED_OUTPUT[subsystem]
         with open(path, 'r') as fp:
             data = {}
             for r in parse.findall(expected_output,fp.read()):
-                if 'sched_ns' in r.named:
-                    return { 'sched_ns': int(r.named['sched_ns']) }
+                if subsystem == 'sched':
+                    return {
+                        'total_ns': int(r.named['total_ns'])
+                    }
+                if subsystem == 'idle':
+                    return {
+                        'total_ns': int(r.named['total_ns']),
+                        'total_hits': int(r.named['total_hits'])
+                    }
                 event_name = r.named['event_name']
                 event_ns   = int(r.named['event_ns'])
                 event_hits = int(r.named['event_hits'])
+                data['total_ns'] = data.get('total_ns', 0) + event_ns
+                data['total_hits'] = data.get('total_hits', 0) + event_hits
                 data.update({
-                    '{}.ns'.format(r.named['event_name']) : event_ns,
-                    '{}.hits'.format(r.named['event_name']) : event_hits,
+                    '{}_ns'.format(r.named['event_name']) : event_ns,
+                    '{}_hits'.format(r.named['event_name']) : event_hits,
                 })
             return data
         raise ParsingError()
     def parse(self, dirPath):
         all_data = {}
         for subsystem in self.SCHED_MONITOR_EXPECTED_OUTPUT:
-            expected_output = self.SCHED_MONITOR_EXPECTED_OUTPUT[subsystem]
             path = "/".join([dirPath, subsystem])
             if not os.path.isdir(path):
                 logging.warn('SchedMonitor parser did not find {}'.format(path))
@@ -34,11 +43,11 @@ class SchedMonitor:
             data = {}
             for cpu in os.listdir(path):
                 filepath = "/".join([path, cpu])
-                cpu = self._parse_one_cpu(filepath, expected_output)
+                cpu = self._parse_one_cpu(filepath, subsystem)
                 for k in cpu:
                     data[k] = data.get(k, 0) + cpu[k]
             all_data.update({
-                '{}.{}'.format(subsystem,k) : data[k]
+                '{}_{}'.format(subsystem,k) : data[k]
                 for k in data
             })
         return all_data
