@@ -2,8 +2,8 @@ DIR_IN_SYSBENCH_STORAGE=$(foreach m,i44 i80,$(foreach b,mongo mysql,$(wildcard ~
 SYSBENCH_STORAGE=sysbench.csv
 PUSH+=$(SYSBENCH_STORAGE)
 
-METRICS=min_latency max_latency avg_latency p95th_latency throughput duration nr_migrations nr_sleep nr_switches nr_wakeup
 include metric.mk
+METRICS=min_latency max_latency avg_latency p95th_latency throughput duration $(COMMON_METRICS)
 $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
 $(SYSBENCH_STORAGE):

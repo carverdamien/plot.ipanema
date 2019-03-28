@@ -2,8 +2,8 @@ DIR_IN_BATCH_STORAGE=$(foreach m,i44 i80,$(foreach b,kbuild hackbench,$(wildcard
 BATCH_STORAGE=batch.csv
 PUSH+=$(BATCH_STORAGE)
 
-METRICS=time nr_migrations nr_sleep nr_switches nr_wakeup
 include metric.mk
+METRICS=time $(COMMON_METRICS)
 $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
 $(BATCH_STORAGE):
