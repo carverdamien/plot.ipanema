@@ -1,6 +1,33 @@
 import os, logging, json, parse
 from common import *
 
+class ProcStat:
+    # https://elixir.bootlin.com/linux/v4.19/source/fs/proc/stat.c
+    PROC_STAT_EXPECTED_OUTPUT = """cpu  {user} {nice} {system} {idle} {iowait} {irq} {softirq} {steal} {guest} {guest_nice}"""
+    def _parse_path(self, path):
+        st_mtime = os.stat(path).st_mtime
+        data = {
+            'file' : path,
+            'st_mtime' : st_mtime,
+        }
+        with open(path, 'r') as fp:
+            r = parse.search(self.PROC_STAT_EXPECTED_OUTPUT,fp.read())
+            data.update({
+                k:int(r.named[k])
+                for k in r.named
+            })
+            return data
+        raise ParsingError()
+    def parse(self, dirPath):
+        try:
+            begin = self._parse_path(dirPath+'/stat.begin')
+            end = self._parse_path(dirPath+'/stat.end')
+            return { k:end[k]-begin[k] for k in begin if k not in ['file','st_mtime'] }
+        except FileNotFoundError as e:
+            logging.warn('In ProcStat: {}'.format(e))
+            pass
+        return {}
+
 class SchedMonitor:
     SCHED_MONITOR_EXPECTED_OUTPUT = {
         'sched' : """{total_ns}""",
@@ -129,6 +156,7 @@ class Batch:
                 p = dirPath+"/data/"+f
                 try:
                     data = self._parse_path(path=p)
+                    data.update(ProcStat().parse(dirPath+"/log/"+f))
                     data.update(SchedDebug().parse(dirPath+"/log/"+f))
                     data.update(SchedMonitor().parse(dirPath+"/log/"+f+"/sched_monitor"))
                     values.append(data)
@@ -190,6 +218,7 @@ Latency (ms):
                 p = dirPath+"/data/"+f
                 try:
                     data = self._parse_path(path=p)
+                    data.update(ProcStat().parse(dirPath+"/log/"+f))
                     data.update(SchedDebug().parse(dirPath+"/log/"+f))
                     data.update(SchedMonitor().parse(dirPath+"/log/"+f+"/sched_monitor"))
                     values.append(data)
