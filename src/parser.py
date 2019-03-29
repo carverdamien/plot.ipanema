@@ -3,7 +3,7 @@ from common import *
 
 class ProcStat:
     # https://elixir.bootlin.com/linux/v4.19/source/fs/proc/stat.c
-    PROC_STAT_EXPECTED_OUTPUT = """cpu  {user} {nice} {system} {idle} {iowait} {irq} {softirq} {steal} {guest} {guest_nice}"""
+    PROC_STAT_EXPECTED_OUTPUT = """cpu  {procstat_user} {procstat_nice} {procstat_system} {procstat_idle} {procstat_iowait} {procstat_irq} {procstat_softirq} {procstat_steal} {procstat_guest} {procstat_guest_nice}"""
     def _parse_path(self, path):
         st_mtime = os.stat(path).st_mtime
         data = {
