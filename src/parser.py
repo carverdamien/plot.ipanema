@@ -30,7 +30,7 @@ class ProcStat:
 
 class SchedMonitor:
     SCHED_MONITOR_EXPECTED_OUTPUT = {
-        'sched' : """{total_ns}""",
+        'sched' : """{total_ns:d}""",
         'idle'    : """Idle: {total_ns} ns ({total_hits} hits)""",
         'fair'    : """{:s}{event_name}: {event_ns} ns ({event_hits} hits)""",
         'ipanema' : """{:s}{event_name}: {event_ns} ns ({event_hits} hits)""",
