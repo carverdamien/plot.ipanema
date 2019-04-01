@@ -16,6 +16,24 @@ class ProcStat:
                 k:int(r.named[k])
                 for k in r.named
             })
+            # https://github.com/hishamhm/htop/blob/master/linux/LinuxProcessList.c
+            usertime = data['procstat_user']
+            guest = data['procstat_guest']
+            guestnice = data['procstat_guest_nice']
+            idletime = data['procstat_idle']
+            ioWait = data['procstat_iowait']
+            systemtime = data['procstat_system']
+            irq = data['procstat_irq']
+            softIrq = data['procstat_softirq']
+            nicetime = data['procstat_nice']
+            steal = data['procstat_steal']
+            usertime = usertime - guest
+            nicetime = nicetime - guestnice
+            idlealltime = idletime + ioWait
+            systemalltime = systemtime + irq + softIrq
+            virtalltime = guest + guestnice
+            totaltime = usertime + nicetime + systemalltime + idlealltime + steal + virtalltime
+            data['procstat_total'] = totaltime
             return data
         raise ParsingError()
     def parse(self, dirPath):
