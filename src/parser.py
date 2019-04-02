@@ -98,7 +98,12 @@ class SchedMonitor:
         return all_data
 
 class SchedDebug:
-    SCHED_DEBUG_EXPECTED_OUTPUT="""
+    SCHED_DEBUG_CLK_EXPECTED_OUTPUT="""
+ktime                                   : {ktime}
+sched_clk                               : {sched_clk}
+cpu_clk                                 : {cpu_clk}
+"""
+    SCHED_DEBUG_CPU_EXPECTED_OUTPUT="""
 cpu#{}, {} MHz
   .nr_running                    : {}
   .load                          : {}
@@ -127,7 +132,11 @@ cpu#{}, {} MHz
             'st_mtime' : st_mtime,
         }
         with open(path, 'r') as fp:
-            for r in parse.findall(self.SCHED_DEBUG_EXPECTED_OUTPUT,fp.read()):
+            r = parse.search(self.SCHED_DEBUG_CLK_EXPECTED_OUTPUT,fp.read())
+            for k in r.named:
+                data[k] = float(r.named[k])
+        with open(path, 'r') as fp:
+            for r in parse.findall(self.SCHED_DEBUG_CPU_EXPECTED_OUTPUT,fp.read()):
                 for k in r.named:
                     v = int(r.named[k])
                     data[k] = data.get(k,0) + v
