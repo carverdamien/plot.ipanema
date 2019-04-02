@@ -124,7 +124,7 @@ def save(config, metric, output, df):
         yaxis={'title':metric},
     )
     fig = go.Figure(data=data, layout=layout)
-    plot(fig, filename=output)
+    plot(fig, filename=output, auto_open=False)
 
 def main():
     args = parseCmdLine()

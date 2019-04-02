@@ -11,14 +11,18 @@ description="""
 Plot utility:
 Loads a Dataframe and plots a view of the data.
 """
+SCHED_MONITOR = ['sched_total_ns','idle_total_ns']
+SCHED_DEBUG = ['cpu_clk','sched_clk','ktime']
 PROCSTAT = ['user','system','idle','iowait','softirq','irq','nice','steal','guest','guest_nice', 'total']
-TIME_STACK = []
+# TIME_STACK = ['duration','application']
 # TIME_STACK = ['fair','ipanema']
 # TIME_STACK += ['sched']
-TIME_STACK += ['system','user','idle']
-TIME_STACK += ['softirq','irq','nice','steal','guest','guest_nice','iowait']
-TIME_STACK += ['total']
-TIME_STACK += ['sm_idle']
+# TIME_STACK += ['system','user','idle']
+# TIME_STACK += ['softirq','irq','nice','steal','guest','guest_nice','iowait']
+# TIME_STACK += ['total']
+# TIME_STACK += ['sm_idle']
+# TIME_STACK += SCHED_DEBUG + SCHED_MONITOR
+TIME_STACK = ['sched_total_ns', 'application', 'idle_total_ns'] #+ SCHED_DEBUG
 
 def parseCmdLine():
     parser = argparse.ArgumentParser(description=description)
@@ -78,6 +82,7 @@ def unified_dataframe(df):
         df.rename(columns={'time':'duration'},inplace=True)
     else:
         assert 'duration' in df.columns
+    N_CPU = 160
     # Unit conversion
     for header in PROCSTAT:
         header = "procstat_{}".format(header)
@@ -85,30 +90,44 @@ def unified_dataframe(df):
         # schedmonitor is in 10**-9sec
         # 9-2=7
         df[header] = 10**7 * df[header]
-    logging.info('Mean difference between idle_total_ns and procstat_idle is {}.'.format(
-        np.mean(df['idle_total_ns'] - df['procstat_idle'])))
-    for header in ['procstat_idle','idle_total_ns']:
-        logging.info('{} in [{};{}]'.format(header,np.min(df[header]),np.max(df[header])))
-    columns = {
-        'procstat_{}'.format(k):k
-        for k in PROCSTAT
-        }
-    columns.update({
-            'ipanema_total_ns':'ipanema',
-            'fair_total_ns':'fair',
-            'sched_total_ns':'sched',
-            'idle_total_ns':'sm_idle',
-            })
-    df.rename(columns=columns,inplace=True)
+    for header in SCHED_DEBUG:
+        df[header] = 10**-3 * df[header]
+    for header in SCHED_MONITOR:
+        df[header] = 10**-9 / N_CPU * df[header]
+    # logging.info('Mean difference between idle_total_ns and procstat_idle is {}.'.format(
+    #     np.mean(df['idle_total_ns'] - df['procstat_idle'])))
+    # for header in ['procstat_idle','idle_total_ns']:
+    #     logging.info('{} in [{};{}]'.format(header,np.min(df[header]),np.max(df[header])))
+    # columns = {}
+    # columns.update({
+    #     'procstat_{}'.format(k):k
+    #     for k in PROCSTAT
+    #     })
+    # columns.update({
+    #         'ipanema_total_ns':'ipanema',
+    #         'fair_total_ns':'fair',
+    #         'sched_total_ns':'sched',
+    #         'idle_total_ns':'sm_idle',
+    #         })
+    # df.rename(columns=columns,inplace=True)
     df.dropna(inplace=True)
-    cpt=0
-    for d,t,s,l in itertools.zip_longest(df['duration'],df['total']/160/10**9,df['scheduler'],df['load']):
-        if d <= t:
-            print(d,t,s,l)
-        else:
-            cpt+=1
-    print(cpt)
+    # cpt=0
+    # for d,t,s,l in itertools.zip_longest(df['duration'],df['total']/160/10**9,df['scheduler'],df['load']):
+    #     if d <= t:
+    #         print(d,t,s,l)
+    #     else:
+    #         cpt+=1
+    # print(cpt)
     #assert np.sum(df['duration'] <= df['total']/160/10**9) == 0
+    sel = df['ktime'] < (df['idle_total_ns'] + df['sched_total_ns'])
+    count = np.sum(sel)
+    if count > 0:
+        logging.error('Dropping {} case out of {}, because ktime < idle_total_ns + sched_total_ns'.format(count,len(df)))
+        #df['ktime'][sel] = float('Nan')
+        df.loc[sel,['ktime']] = float('Nan')
+        # df.loc[:,['ktime']][sel] = float('Nan')
+        df.dropna(inplace=True)
+    df['application'] = df['ktime'] - df['idle_total_ns'] - df['sched_total_ns']
     for header in HEADER:
         assert header in df.columns, "{} not in df.columns".format(header)
     df.drop(columns=[header for header in df.columns if header not in HEADER],inplace=True)
@@ -116,9 +135,9 @@ def unified_dataframe(df):
     # df['sched'] = df['sched'] - (df['ipanema'] + df['fair'])
     # Convert cpu sec
     # TODO N_CPU
-    N_CPU = 160
-    for header in TIME_STACK:
-       df[header] = df[header] / N_CPU / 10**9
+    # N_CPU = 160
+    # for header in TIME_STACK:
+    #    df[header] = df[header] / N_CPU / 10**9
     return df
     # Ratio conversion
     total = np.zeros(len(df))
