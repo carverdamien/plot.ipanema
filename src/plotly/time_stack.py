@@ -11,10 +11,13 @@ description="""
 Plot utility:
 Loads a Dataframe and plots a view of the data.
 """
+PROCSTAT = ['user','system','idle','iowait','softirq','irq','nice','steal','guest','guest_nice', 'total']
 TIME_STACK = []
 # TIME_STACK = ['fair','ipanema']
-TIME_STACK += ['sched','system','user','idle']
+# TIME_STACK += ['sched']
+TIME_STACK += ['system','user','idle']
 TIME_STACK += ['softirq','irq','nice','steal','guest','guest_nice','iowait']
+TIME_STACK += ['total']
 TIME_STACK += ['sm_idle']
 
 def parseCmdLine():
@@ -71,8 +74,12 @@ def unified_dataframe(df):
         assert np.sum(df['client_sched'] == df['engine_sched']) == len(df)
         df.drop(columns=['client_sched'],inplace=True)
         df.rename(columns={'engine_sched':'scheduler'},inplace=True)
+    if 'time' in df.columns:
+        df.rename(columns={'time':'duration'},inplace=True)
+    else:
+        assert 'duration' in df.columns
     # Unit conversion
-    for header in ['user','system','idle','iowait','softirq','irq','nice','steal','guest','guest_nice']:
+    for header in PROCSTAT:
         header = "procstat_{}".format(header)
         # proc/stat is in USER_HZ ie 10**-2sec getconf CLK_TCK)
         # schedmonitor is in 10**-9sec
@@ -84,7 +91,7 @@ def unified_dataframe(df):
         logging.info('{} in [{};{}]'.format(header,np.min(df[header]),np.max(df[header])))
     columns = {
         'procstat_{}'.format(k):k
-        for k in ['user','system','idle','iowait','softirq','irq','nice','steal','guest','guest_nice']
+        for k in PROCSTAT
         }
     columns.update({
             'ipanema_total_ns':'ipanema',
@@ -93,15 +100,25 @@ def unified_dataframe(df):
             'idle_total_ns':'sm_idle',
             })
     df.rename(columns=columns,inplace=True)
+    df.dropna(inplace=True)
+    cpt=0
+    for d,t,s,l in itertools.zip_longest(df['duration'],df['total']/160/10**9,df['scheduler'],df['load']):
+        if d <= t:
+            print(d,t,s,l)
+        else:
+            cpt+=1
+    print(cpt)
+    #assert np.sum(df['duration'] <= df['total']/160/10**9) == 0
     for header in HEADER:
         assert header in df.columns, "{} not in df.columns".format(header)
     df.drop(columns=[header for header in df.columns if header not in HEADER],inplace=True)
-    df.dropna(inplace=True)
-    df['system'] = df['system'] - df['sched']
+    # df['system'] = df['system'] - df['sched']
     # df['sched'] = df['sched'] - (df['ipanema'] + df['fair'])
-    # cpu sec
+    # Convert cpu sec
+    # TODO N_CPU
+    N_CPU = 160
     for header in TIME_STACK:
-        df[header] = df[header] / 160 / 10**9
+       df[header] = df[header] / N_CPU / 10**9
     return df
     # Ratio conversion
     total = np.zeros(len(df))
