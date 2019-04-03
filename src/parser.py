@@ -109,6 +109,7 @@ cpu#{}, {} MHz
   .load                          : {}
   .nr_switches                   : {nr_switches}
   .nr_migrations                 : {nr_migrations}
+  .nr_migrations_wc              : {nr_migrations_wc}
   .nr_sleep                      : {nr_sleep}
   .nr_wakeup                     : {nr_wakeup}
   .nr_load_updates               : {nr_load_updates}

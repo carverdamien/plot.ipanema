@@ -20,6 +20,9 @@ PUSH+=index.html README.md $(ALL_HTML) $(ALL_CSV) $(ALL_PDF)
 nopush: $(PUSH)
 	@echo done
 
+http: $(PUSH)
+	python -m http.server 80
+
 push: $(PUSH)
 	git pull origin master
 	git add $^

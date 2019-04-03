@@ -8,14 +8,14 @@ $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
 $(BATCH_STORAGE):
 	./src/storage.py -t batch -o $@.tmp.csv $(DIR_IN_BATCH_STORAGE)
-	if ! diff -q $@.tmp.csv $@; then mv $@.tmp.csv $@; fi
+	if ! diff -q $@.tmp.csv $@; then cp $@.tmp.csv $@; fi
 	rm -f $@.tmp.csv
 
 # MACHINE ENGINE ENGINE_VERSION
 define batch
 $1/$2/$3/batch.csv: $$(BATCH_STORAGE)
 	@mkdir -p $$(dir $$@)
-	./src/select.py -i $$< -o $$@ 'machine==$1' 'batch==$2 $3' 'st_mtime>=1553709600'
+	./src/select_row.py -i $$< -o $$@ 'machine==$1' 'batch==$2 $3' 'st_mtime>=1553709600'
 $1/$2/$3/time_stack.html: $1/$2/$3/batch.csv ./src/plotly/time_stack.py
 	./src/plotly/time_stack.py -o $$@ $$<
 ALL+=$1/$2/$3/time_stack

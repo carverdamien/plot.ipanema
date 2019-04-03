@@ -8,14 +8,14 @@ $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
 $(SYSBENCH_STORAGE):
 	./src/storage.py -t sysbench -o $@.tmp.csv $(DIR_IN_SYSBENCH_STORAGE)
-	if ! diff -q $@.tmp.csv $@; then mv $@.tmp.csv $@; fi
+	if ! diff -q $@.tmp.csv $@; then cp $@.tmp.csv $@; fi
 	rm -f $@.tmp.csv
 
 # MACHINE ENGINE ENGINE_VERSION
 define sysbench
 $1/$2/$3/sysbench.csv: $$(SYSBENCH_STORAGE)
 	@mkdir -p $$(dir $$@)
-	./src/select.py -i $$< -o $$@ 'machine==$1' 'engine==$2 $3' 'st_mtime>=1553709600' 'duration<=400'
+	./src/select_row.py -i $$< -o $$@ 'machine==$1' 'engine==$2 $3' 'st_mtime>=1553709600' 'duration<=400'
 $1/$2/$3/time_stack.html: $1/$2/$3/sysbench.csv ./src/plotly/time_stack.py
 	./src/plotly/time_stack.py -o $$@ $$<
 ALL+=$1/$2/$3/time_stack
