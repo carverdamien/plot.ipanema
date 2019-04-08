@@ -31,6 +31,9 @@ def parseCmdLine():
     parser.add_argument('-o', '--output',
                         required=True,
                         help='Output file to store the plot')
+    parser.add_argument('-c', '--config',
+                        required=False,
+                        help='Unused argument config.json')
     parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
