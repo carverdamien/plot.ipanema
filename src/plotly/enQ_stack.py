@@ -11,18 +11,13 @@ description="""
 Plot utility:
 Loads a Dataframe and plots a view of the data.
 """
-SCHED_MONITOR = ['sched_total_ns','idle_total_ns']
-SCHED_DEBUG = ['cpu_clk','sched_clk','ktime']
-PROCSTAT = ['user','system','idle','iowait','softirq','irq','nice','steal','guest','guest_nice', 'total']
-# TIME_STACK = ['duration','application']
-# TIME_STACK = ['fair','ipanema']
-# TIME_STACK += ['sched']
-# TIME_STACK += ['system','user','idle']
-# TIME_STACK += ['softirq','irq','nice','steal','guest','guest_nice','iowait']
-# TIME_STACK += ['total']
-# TIME_STACK += ['sm_idle']
-# TIME_STACK += SCHED_DEBUG + SCHED_MONITOR
-TIME_STACK = ['sched_total_ns', 'application', 'idle_total_ns'] #+ SCHED_DEBUG
+ENQ_STACK = ['enQ_no_reason', 'enQ_new', 'enQ_wakeup', 'enQ_wakeup_mig', 'enQ_lb_mig']
+ENQ_WC_STACK = ['enQ_wc_no_reason', 'enQ_wc_new', 'enQ_wc_wakeup', 'enQ_wc_wakeup_mig', 'enQ_wc_lb_mig']
+def stack():
+    for i in itertools.zip_longest(ENQ_STACK, ENQ_WC_STACK):
+        for j in itertools.chain(i): 
+            yield j
+STACK = [e for e in stack()]
 
 def parseCmdLine():
     parser = argparse.ArgumentParser(description=description)
@@ -37,12 +32,12 @@ def parseCmdLine():
     parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
-def get_y(df, load, scheduler, time):
+def get_y(df, load, scheduler, name):
     sel = df['load'] == load
     sel = np.logical_and(sel, df['scheduler'] == scheduler)
-    return np.mean(df[time][sel])
-    # return np.min(df[time][sel])
-    # return np.array(df[time][sel])[1]
+    return np.mean(df[name][sel])
+    # return np.min(df[name][sel])
+    # return np.array(df[name][sel])[1]
 
 def save(output, df):
     LOADS      = np.unique(df['load'])
@@ -53,10 +48,10 @@ def save(output, df):
     data = [
         go.Bar(
             x=tickvals,
-            y=[get_y(df, load, sch, time) for load in LOADS for sch in SCHEDULERS],
-            name=time,
+            y=[get_y(df, load, sch, name) for load in LOADS for sch in SCHEDULERS],
+            name=name,
             )
-        for time in TIME_STACK
+        for name in STACK
         ]
     layout = go.Layout(
         barmode='stack',
@@ -69,7 +64,7 @@ def save(output, df):
     plot(fig, filename=output, auto_open=False)
 
 def unified_dataframe(df):
-    HEADER = ['load','scheduler'] + TIME_STACK
+    HEADER = ['load','scheduler'] + STACK
     if 'kernel' in df.columns:
         assert len(np.unique(df['kernel']))<=1
         df.drop(columns=['kernel'],inplace=True)
@@ -81,80 +76,19 @@ def unified_dataframe(df):
         assert np.sum(df['client_sched'] == df['engine_sched']) == len(df)
         df.drop(columns=['client_sched'],inplace=True)
         df.rename(columns={'engine_sched':'scheduler'},inplace=True)
-    if 'time' in df.columns:
-        df.rename(columns={'time':'duration'},inplace=True)
-    else:
-        assert 'duration' in df.columns
     N_CPU = 160
-    # Unit conversion
-    for header in PROCSTAT:
-        header = "procstat_{}".format(header)
-        # proc/stat is in USER_HZ ie 10**-2sec getconf CLK_TCK)
-        # schedmonitor is in 10**-9sec
-        # 9-2=7
-        df[header] = 10**7 * df[header]
-    for header in SCHED_DEBUG:
-        df[header] = 10**-3 * df[header]
-    for header in SCHED_MONITOR:
-        df[header] = 10**-9 / N_CPU * df[header]
-    # logging.info('Mean difference between idle_total_ns and procstat_idle is {}.'.format(
-    #     np.mean(df['idle_total_ns'] - df['procstat_idle'])))
-    # for header in ['procstat_idle','idle_total_ns']:
-    #     logging.info('{} in [{};{}]'.format(header,np.min(df[header]),np.max(df[header])))
-    # columns = {}
-    # columns.update({
-    #     'procstat_{}'.format(k):k
-    #     for k in PROCSTAT
-    #     })
-    # columns.update({
-    #         'ipanema_total_ns':'ipanema',
-    #         'fair_total_ns':'fair',
-    #         'sched_total_ns':'sched',
-    #         'idle_total_ns':'sm_idle',
-    #         })
-    # df.rename(columns=columns,inplace=True)
     df.dropna(inplace=True)
-    # cpt=0
-    # for d,t,s,l in itertools.zip_longest(df['duration'],df['total']/160/10**9,df['scheduler'],df['load']):
-    #     if d <= t:
-    #         print(d,t,s,l)
-    #     else:
-    #         cpt+=1
-    # print(cpt)
-    #assert np.sum(df['duration'] <= df['total']/160/10**9) == 0
-    sel = df['ktime'] < (df['idle_total_ns'] + df['sched_total_ns'])
-    count = np.sum(sel)
-    if count > 0:
-        logging.error('Dropping {} case out of {}, because ktime < idle_total_ns + sched_total_ns'.format(count,len(df)))
-        #df['ktime'][sel] = float('Nan')
-        df.loc[sel,['ktime']] = float('Nan')
-        # df.loc[:,['ktime']][sel] = float('Nan')
-        df.dropna(inplace=True)
-    df['application'] = df['ktime'] - df['idle_total_ns'] - df['sched_total_ns']
+    for i in range(len(ENQ_STACK)):
+        sel = df[ENQ_WC_STACK[i]] > df[ENQ_STACK[i]]
+        count = np.sum(sel)
+        if count > 0:
+            logging.error('Dropping {} case out of {}, because {} > {}'.format(count,len(df),ENQ_WC_STACK[i],ENQ_STACK[i]))
+            df.loc[sel,[ENQ_STACK[i]]] = float('Nan')
+            df.dropna(inplace=True)
+        df[ENQ_STACK[i]] = df[ENQ_STACK[i]] - df[ENQ_WC_STACK[i]]
     for header in HEADER:
         assert header in df.columns, "{} not in df.columns".format(header)
     df.drop(columns=[header for header in df.columns if header not in HEADER],inplace=True)
-    # df['system'] = df['system'] - df['sched']
-    # df['sched'] = df['sched'] - (df['ipanema'] + df['fair'])
-    # Convert cpu sec
-    # TODO N_CPU
-    # N_CPU = 160
-    # for header in TIME_STACK:
-    #    df[header] = df[header] / N_CPU / 10**9
-    return df
-    # Ratio conversion
-    total = np.zeros(len(df))
-    for header in TIME_STACK:
-        total += df[header]
-    logging.info('Total min:{}, max:{}, mean:{}, std:{}'.format(
-            np.min(total),
-            np.max(total),
-            np.mean(total),
-            np.std(total),
-            )
-                 )
-    for header in TIME_STACK:
-        df[header] = df[header] / total
     return df
     
 def main():
