@@ -1,16 +1,31 @@
 {
     "Linux":"linux",
     "Linux,Linux":"linux",
+    
     "cfs_wwc scheduling policy":"cfs_wwc",
     "cfs_wwc scheduling policy,cfs_wwc scheduling policy":"cfs_wwc",
+    
+    "cfs_wwc_lookalike scheduling policy":"cfs_wwc_lookalike",
+    "cfs_wwc_lookalike scheduling policy,cfs_wwc_lookalike scheduling policy":"cfs_wwc_lookalike",
+
+    "cfs_wwc_flat_4msLB scheduling policy":"cfs_wwc_flat_4msLB",
+    "cfs_wwc_flat_4msLB scheduling policy,cfs_wwc_flat_4msLB scheduling policy":"cfs_wwc_flat_4msLB",
+    
+    "cfs_wwc_dumb_new_unblock scheduling policy":"cfs_wwc_dumb_new_unblock",
+    "cfs_wwc_dumb_new_unblock scheduling policy,cfs_wwc_dumb_new_unblock scheduling policy":"cfs_wwc_dumb_new_unblock",
+    
     "cfs_wwc_flat scheduling policy":"cfs_wwc_flat",
     "cfs_wwc_flat scheduling policy,cfs_wwc_flat scheduling policy":"cfs_wwc_flat",
+    
     "cfs_wwc_flat_v2 scheduling policy":"cfs_wwc_flat_v2",
     "cfs_wwc_flat_v2 scheduling policy,cfs_wwc_flat_v2 scheduling policy":"cfs_wwc_flat_v2",
+    
     "ule scheduling policy":"ule",
     "ule scheduling policy,ule scheduling policy":"ule",
+    
     "ule_wwc scheduling policy":"ule_wwc",
     "ule_wwc scheduling policy,ule_wwc scheduling policy":"ule_wwc",
+    
     "ule_wwc_v3 scheduling policy":"ule_wwc_v3",
     "ule_wwc_v3 scheduling policy,ule_wwc_v3 scheduling policy":"ule_wwc_v3"
 }

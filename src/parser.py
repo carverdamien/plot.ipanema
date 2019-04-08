@@ -104,27 +104,13 @@ sched_clk                               : {sched_clk}
 cpu_clk                                 : {cpu_clk}
 """
     SCHED_DEBUG_CPU_EXPECTED_OUTPUT="""
-cpu#{}, {} MHz
-  .nr_running                    : {}
-  .load                          : {}
-  .nr_switches                   : {nr_switches}
-  .nr_migrations                 : {nr_migrations}
-  .nr_migrations_wc              : {nr_migrations_wc}
-  .nr_sleep                      : {nr_sleep}
-  .nr_wakeup                     : {nr_wakeup}
-  .nr_load_updates               : {nr_load_updates}
-  .nr_uninterruptible            : {nr_uninterruptible}
-  .next_balance                  : {}
-  .curr->pid                     : {}
-  .clock                         : {}
-  .clock_task                    : {}
-  .cpu_load[0]                   : {}
-  .cpu_load[1]                   : {}
-  .cpu_load[2]                   : {}
-  .cpu_load[3]                   : {}
-  .cpu_load[4]                   : {}
-  .avg_idle                      : {}
-  .max_idle_balance_cost         : {}
+  .enQ.no_reason                 : {enQ_no_reason}
+  .enQ.new                       : {enQ_new}
+  .enQ.wakeup                    : {enQ_wakeup}
+  .enQ.wakeup_mig                : {enQ_wakeup_mig}
+  .enQ.lb_mig                    : {enQ_lb_mig}
+  .deQ.no_reason                 : {deQ_no_reason}
+  .deQ.sleep                     : {deQ_sleep}
 """
     def _parse_path(self, path):
         st_mtime = os.stat(path).st_mtime
