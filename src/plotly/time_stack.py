@@ -68,7 +68,7 @@ def save(output, df):
 def unified_dataframe(df):
     HEADER = ['load','scheduler'] + TIME_STACK
     if 'kernel' in df.columns:
-        assert len(np.unique(df['kernel']))==1
+        assert len(np.unique(df['kernel']))<=1
         df.drop(columns=['kernel'],inplace=True)
     if 'clients' in df.columns:
         df.rename(columns={'clients':'load'},inplace=True)

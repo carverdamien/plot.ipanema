@@ -111,6 +111,13 @@ cpu_clk                                 : {cpu_clk}
   .enQ.lb_mig                    : {enQ_lb_mig}
   .deQ.no_reason                 : {deQ_no_reason}
   .deQ.sleep                     : {deQ_sleep}
+  .enQ.wc.no_reason              : {enQ_wc_no_reason}
+  .enQ.wc.new                    : {enQ_wc_new}
+  .enQ.wc.wakeup                 : {enQ_wc_wakeup}
+  .enQ.wc.wakeup_mig             : {enQ_wc_wakeup_mig}
+  .enQ.wc.lb_mig                 : {enQ_wc_lb_mig}
+  .deQ.wc.no_reason              : {deQ_wc_no_reason}
+  .deQ.wc.sleep                  : {deQ_wc_sleep}
 """
     def _parse_path(self, path):
         st_mtime = os.stat(path).st_mtime
