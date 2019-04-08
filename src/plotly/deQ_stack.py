@@ -11,8 +11,8 @@ description="""
 Plot utility:
 Loads a Dataframe and plots a view of the data.
 """
-ENQ_STACK = ['enQ_no_reason', 'enQ_new', 'enQ_wakeup', 'enQ_wakeup_mig', 'enQ_lb_mig']
-ENQ_WC_STACK = ['enQ_wc_no_reason', 'enQ_wc_new', 'enQ_wc_wakeup', 'enQ_wc_wakeup_mig', 'enQ_wc_lb_mig']
+ENQ_STACK = ['deQ_no_reason', 'deQ_sleep']
+ENQ_WC_STACK = ['deQ_wc_no_reason', 'deQ_wc_sleep']
 def stack():
     for i in itertools.zip_longest(ENQ_STACK, ENQ_WC_STACK):
         for j in itertools.chain(i): 
