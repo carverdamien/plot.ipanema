@@ -14,9 +14,8 @@ Loads a Dataframe and plots a view of the data.
 ENQ_STACK = ['enQ_no_reason', 'enQ_new', 'enQ_wakeup', 'enQ_wakeup_mig', 'enQ_lb_mig']
 ENQ_WC_STACK = ['enQ_wc_no_reason', 'enQ_wc_new', 'enQ_wc_wakeup', 'enQ_wc_wakeup_mig', 'enQ_wc_lb_mig']
 def stack():
-    for i in itertools.zip_longest(ENQ_STACK, ENQ_WC_STACK):
-        for j in itertools.chain(i): 
-            yield j
+    for i in itertools.chain(ENQ_STACK, ENQ_WC_STACK):
+        yield i
 STACK = [e for e in stack()]
 
 def parseCmdLine():
