@@ -130,3 +130,4 @@
 * i80/kbuild/4.19/enQ_stack [html](i80/kbuild/4.19/enQ_stack.html) [pdf](i80/kbuild/4.19/enQ_stack.pdf)
 * i80/kbuild/4.19/enQ_wc_stack [html](i80/kbuild/4.19/enQ_wc_stack.html) [pdf](i80/kbuild/4.19/enQ_wc_stack.pdf)
 * i80/kbuild/4.19/deQ_stack [html](i80/kbuild/4.19/deQ_stack.html) [pdf](i80/kbuild/4.19/deQ_stack.pdf)
+* i80/status [html](i80/status.html) [pdf](i80/status.pdf)
