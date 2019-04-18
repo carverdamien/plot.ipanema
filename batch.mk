@@ -1,4 +1,4 @@
-DIR_IN_BATCH_STORAGE=$(foreach m,i80,$(foreach b,kbuild hackbench,$(wildcard ~/storage/$m/$b/*/*)))
+DIR_IN_BATCH_STORAGE=$(filter-out %.csv,$(foreach m,i80,$(foreach b,kbuild hackbench,$(wildcard ~/storage/$m/$b/*/*))))
 BATCH_STORAGE=batch.csv
 PUSH+=$(BATCH_STORAGE)
 
@@ -6,10 +6,15 @@ include metric.mk
 METRICS=time $(COMMON_METRICS)
 $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
-$(BATCH_STORAGE):
-	./src/storage.py -t batch -o $@.tmp.csv $(DIR_IN_BATCH_STORAGE)
-	if ! diff -q $@.tmp.csv $@; then cp $@.tmp.csv $@; fi
-	rm -f $@.tmp.csv
+define batch_csv
+$1.csv:
+	./src/storage.py -t batch -o $1.csv $1
+endef
+
+$(foreach d,$(DIR_IN_BATCH_STORAGE),$(eval $(call batch_csv,$d)))
+
+$(BATCH_STORAGE): $(DIR_IN_BATCH_STORAGE:%=%.csv)
+	./src/concatenate.py $@ $^
 
 # MACHINE ENGINE ENGINE_VERSION
 define batch

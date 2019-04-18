@@ -1,4 +1,4 @@
-DIR_IN_SYSBENCH_STORAGE=$(foreach m,i80,$(foreach b,mongo mysql,$(wildcard ~/storage/$m/$b/*/*)))
+DIR_IN_SYSBENCH_STORAGE=$(filter-out %.csv,$(foreach m,i80,$(foreach b,mongo mysql,$(wildcard ~/storage/$m/$b/*/*))))
 SYSBENCH_STORAGE=sysbench.csv
 PUSH+=$(SYSBENCH_STORAGE)
 
@@ -6,10 +6,15 @@ include metric.mk
 METRICS=min_latency max_latency avg_latency p95th_latency throughput duration $(COMMON_METRICS)
 $(foreach m,$(METRICS),$(eval $(call metric,$(m))))
 
-$(SYSBENCH_STORAGE):
-	./src/storage.py -t sysbench -o $@.tmp.csv $(DIR_IN_SYSBENCH_STORAGE)
-	if ! diff -q $@.tmp.csv $@; then cp $@.tmp.csv $@; fi
-	rm -f $@.tmp.csv
+define sysbench_csv
+$1.csv:
+	./src/storage.py -t sysbench -o $1.csv $1
+endef
+
+$(foreach d,$(DIR_IN_SYSBENCH_STORAGE),$(eval $(call sysbench_csv,$d)))
+
+$(SYSBENCH_STORAGE): $(DIR_IN_SYSBENCH_STORAGE:%=%.csv)
+	./src/concatenate.py $@ $^
 
 # MACHINE ENGINE ENGINE_VERSION
 define sysbench
