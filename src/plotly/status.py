@@ -4,7 +4,22 @@ import pandas as pd
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import plotly.graph_objs as go
 import numpy as np
-import sys, os, itertools
+import sys, os, itertools, json, datetime
+
+def remove_unstable(df,time):
+	timeformat = "%b %d, %Y, %H:%M:%S"
+	with open('config.json') as f:
+		config = json.load(f)
+		time = df[time].astype('datetime64[s]')
+		sel = np.ones(len(df), dtype='bool')
+		for start, end in config["unstable"]:
+			start = datetime.datetime.strptime(start, timeformat)
+			end   = datetime.datetime.strptime(end,   timeformat)
+			mysel = np.logical_and(time > start, time < end)
+			sel = np.logical_and(sel,np.logical_not(mysel))
+			# print('Remove',start, end, np.sum(mysel))
+		return df[sel]
+	raise Exception()
 
 class Sysbench(object):
 	def __init__(self, path, time='st_mtime', metric='throughput'):
@@ -12,7 +27,7 @@ class Sysbench(object):
 		self.path = path
 		self.time = time
 		self.metric = metric
-		self.df = pd.read_csv(path).sort_values(self.time)
+		self.df = remove_unstable(pd.read_csv(path).sort_values(self.time), time)
 		self._X = np.array(self.df[self.time])
 		self._Y = np.array(self.df[self.metric])
 		self.LABELS = [

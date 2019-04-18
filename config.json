@@ -1,0 +1,69 @@
+{  
+	"pretty_label":{  
+		"time":"Execution time in s",
+		"tasks":"# of tasks",
+		"sched_total_ns":"Time in the scheduler in s",
+		"scheduling policy":"Scheduler",
+		"clients":"# of clients",
+		"throughput":"Requests in k/s",
+		"95th_latency":"Response Time in ms (95th)",
+		"p95th_latency":"Response Time in ms (95th)",
+		"avg_latency":"Response Time in ms (avg)",
+		"Linux,Linux":"CFS",
+		"Linux":"CFS",
+		"cfs_wwc scheduling policy,cfs_wwc scheduling policy":"CFS-WWC",
+		"cfs_wwc scheduling policy":"CFS-WWC",
+		"cfs_wwc_dumb_new_unblock scheduling policy":"CFS-WWC-DUMB-NEW",
+		"cfs_wwc_dumb_new_unblock scheduling policy,cfs_wwc_dumb_new_unblock scheduling policy":"CFS-WWC-DUMB-NEW",
+		"cfs_wwc_local_new_unblock scheduling policy,cfs_wwc_local_new_unblock scheduling policy":"CFS-WWC-LOCAL-NEW",
+		"cfs_wwc_local_new_unblock scheduling policy":"CFS-WWC-LOCAL-NEW",
+		"cfs_wwc_lookalike scheduling policy":"CFS-WWC-LOOKALIKE",
+		"cfs_wwc_lookalike scheduling policy,cfs_wwc_lookalike scheduling policy":"CFS-WWC-LOOKALIKE",
+		"ule scheduling policy,ule scheduling policy":"ULE",
+		"ule scheduling policy":"ULE",
+		"ule_wwc_v3 scheduling policy,ule_wwc_v3 scheduling policy":"ULE-WWC",
+		"ule_wwc_v3 scheduling policy":"ULE-WWC",
+		"cfs_wwc_flat_v2 scheduling policy,cfs_wwc_flat_v2 scheduling policy":"CFS-WWC-FLAT-160ms",
+		"cfs_wwc_flat_v2 scheduling policy":"CFS-WWC-FLAT-160ms",
+		"cfs_wwc_flat_4msLB scheduling policy,cfs_wwc_flat_4msLB scheduling policy":"CFS-WWC-FLAT",
+		"cfs_wwc_flat_4msLB scheduling policy":"CFS-WWC-FLAT",
+		"cfs_wwc_flat_4msLB_lock scheduling policy,cfs_wwc_flat_4msLB_lock scheduling policy":"CFS-WWC-FLAT-4ms-LOCK",
+		"cfs_wwc_flat_4msLB_lock scheduling policy":"CFS-WWC-FLAT-4ms-LOCK"
+	},
+	"filterout":[
+		"CFS-WWC-FLAT-160ms",
+		"CFS-WWC-FLAT-4ms",
+		"CFS-WWC-FLAT-4ms-LOCK",
+		"CFS-WWC-DUMB-NEW",
+		"CFS-WWC-LOCAL-NEW",
+		"CFS-WWC-LOOKALIKE"
+	],
+	"reorder":[  
+		"CFS",
+		"ULE",
+		"CFS-WWC",
+		"CFS-WWC-FLAT",
+		"CFS-WWC-FLAT-4ms",
+		"ULE-WWC"
+	],
+	"palette":{  
+		"CFS":"#05231d",
+		"ULE":"#393d72",
+		"CFS-WWC":"#9b4d84",
+		"CFS-WWC-FLAT":"#bd8767",
+		"CFS-WWC-FLAT-4ms":"#aacd92",
+		"ULE-WWC":"#d1efe9"
+	},
+	"markers":{
+		"CFS":"o",
+		"ULE":"o",
+		"CFS-WWC":",",
+		"CFS-WWC-FLAT":",",
+		"CFS-WWC-FLAT-4ms":",",
+		"ULE-WWC":","
+	},
+	"unstable":[
+		["Apr 12, 2019, 03:41:00", "Apr 12, 2019, 03:42:00"],
+		["Apr 16, 2019, 08:00:00", "Apr 18, 2019, 08:37:16"]
+	]
+}

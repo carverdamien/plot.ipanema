@@ -9,7 +9,7 @@ default: push
 include sysbench.mk
 include batch.mk
 
-i80/status.html: src/plotly/status.py sysbench.csv batch.csv
+i80/status.html: src/plotly/status.py sysbench.csv batch.csv config.json
 	./$<
 ALL_HTML+=i80/status.html
 ALL+=i80/status
