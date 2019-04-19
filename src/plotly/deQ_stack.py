@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from status import remove_unstable
 from common import *
 import argparse, logging, itertools, sys, os, json
 import pandas as pd
@@ -105,7 +106,7 @@ def main():
         level = logging.DEBUG
     logging.basicConfig(format='[%(levelname)s] %(message)s', level=level)
     
-    df = pd.read_csv(args.inputFile)
+    df = remove_unstable(pd.read_csv(args.inputFile), 'st_mtime')
     df = unified_dataframe(df)
     if(len(df) == 0):
         logging.error('Empty dataframe')

@@ -3,11 +3,7 @@
 cat <<EOF
 # plot.ipanema
 
-Last update
-
-$(date)
-
-$(hostname)
+Last update: $(date)
 
 $(for f in $@
 do

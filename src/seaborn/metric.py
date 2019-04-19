@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from status import remove_unstable
 from common import *
 import argparse, logging, itertools, sys, os, json
 import pandas as pd
@@ -126,7 +127,7 @@ def main():
     metric = os.path.splitext(metric)[0]
     logging.info('metric={}'.format(metric))
     
-    df = pd.read_csv(args.inputFile)
+    df = remove_unstable(pd.read_csv(args.inputFile), 'st_mtime')
     if(len(df) == 0):
         logging.error('Empty dataframe')
     else:

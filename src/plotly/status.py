@@ -77,13 +77,6 @@ class Batch(Sysbench):
 		for sel,labels,values in self.classes():
 			self._Y[sel] = min(self.df[sel][self.metric]) / self.df[sel][self.metric]
 
-def main():
-	df = pd.read_csv('sysbench.csv')
-	output = sys.argv[0]
-	output, _ = os.path.splitext(output)
-	output += '.html'
-	save(df, output)
-
 def save(objects, output):
 	data = [
 		go.Scatter(
