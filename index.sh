@@ -9,6 +9,9 @@ cat <<EOF
 </head>
 <body>
 <h1>plot.ipanema</h1>
+Last update</br>
+$(date)</br>
+$(hostname)</br>
 <ul>
 $(for f in $@
 do
