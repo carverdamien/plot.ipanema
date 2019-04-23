@@ -14,3 +14,8 @@ ALL_NPZ+=$(RQSIZE_NPZ) $(IDLE_TIME_NPZ)
 
 %/idle_time.npz: %/rqsize.npz ./src/idle_time.py
 	./src/idle_time.py $@ $<
+
+i80/all_idle_time: $(IDLE_TIME_NPZ)
+	rm -rf $@
+	mkdir -p $@
+	./src/plotly/all_idle_time.py $@ $^
