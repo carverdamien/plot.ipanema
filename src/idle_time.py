@@ -7,6 +7,7 @@ def compute_idle_time(clock, size):
     N_CPU = len(clock)
     idle_time = tuple(_compute_idle_time(clock[cpu],size[cpu]) for cpu in range(N_CPU))
     idle_time = np.concatenate(idle_time)
+    idle_time = np.sort(idle_time)
     return {'idle_time':idle_time}
 
 def _compute_idle_time(clock, size):
