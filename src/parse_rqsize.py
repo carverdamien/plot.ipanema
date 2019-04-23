@@ -53,8 +53,9 @@ def main():
         data = load_tracer_tgz(tracer_tgz)
     with h5py.File(rqsize_h5, "w") as f:
         for k in data:
-            df = f.create_dataset(k, np.shape(data[k]), compression="gzip")
-            df = data[k]
+            f.create_dataset(k,data=data[k],compression="gzip",dtype='i8')
+            #df = f.create_dataset(k, np.shape(data[k]), compression="gzip", dtype='i8')
+            #df = data[k]
 
 if __name__ == '__main__':
     main()
