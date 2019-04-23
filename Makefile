@@ -3,11 +3,15 @@ ALL?=
 ALL_HTML?=
 ALL_CSV?=
 ALL_PDF?=
+ALL_NPZ?=
 
 default: push
 
 include sysbench.mk
 include batch.mk
+include tracer.mk
+
+all_npz: $(ALL_NPZ)
 
 i80/status.html: src/plotly/status.py sysbench.csv batch.csv config.json
 	./$<
