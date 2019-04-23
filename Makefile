@@ -5,6 +5,8 @@ ALL_CSV?=
 ALL_PDF?=
 ALL_NPZ?=
 
+-include cache.mk
+
 default: push
 
 include sysbench.mk
