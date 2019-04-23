@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-import sys, tarfile, parse, logging, multiprocessing, os
+import sys, tarfile, parse, logging, multiprocessing, os, h5py
 import numpy as np
-import pandas as pd
 
 def parse_tracer_file(f):
     p = parse.compile("""{clock:d} RQ_SIZE {pid:d} {size:d} {op:d}""")
-    return pd.DataFrame([p.parse(l.decode("utf-8")).named for l in f.readlines()])
+    data = {k:[] for k in ['clock', 'pid', 'size', 'op']}
+    for l in f.readlines():
+        r = p.parse(l.decode("utf-8")).named
+        for k in r:
+            data[k].append(int(r[k]))
+    return data
 
 def load_tracer_tgz(path):
-    data = { 'clock' : [], 'size' : [] }
+    data = {}
     with tarfile.open(path) as tgz:
         members = { m.name:m for m in tgz.getmembers() if m.isreg() }
         for cpuid in range(len(members)):
@@ -18,9 +22,8 @@ def load_tracer_tgz(path):
                 sys.exit(0)
             f = tgz.extractfile(members[expected_member_name])
             df = parse_tracer_file(f)
-            for k in data:
-                data[k].append(np.array(df[k]))
-    return {k:np.array(data[k]) for k in data}
+            data[str(cpuid)] = [df['clock'],df['size']]
+    return data
 
 def func(args):
     path, name = args
@@ -30,27 +33,28 @@ def func(args):
 
 def load_tracer_tgz_in_parallel(path, parallel):
     p = multiprocessing.Pool(parallel)
-    data = { 'clock' : [], 'size' : [] }
+    data = {}
     with tarfile.open(path) as tgz:
         members = { m.name:m for m in tgz.getmembers() if m.isreg() }
-        dfs = p.map(func,[[path,'tracer/{}'.format(cpuid)] for cpuid in range(len(members))])
-        for df in dfs:
-            for k in data:
-                data[k].append(np.array(df[k]))
-    return {k:np.array(data[k]) for k in data}
+        df = p.map(func,[[path,'tracer/{}'.format(cpuid)] for cpuid in range(len(members))])
+        for i in range(len(df)):
+            data[str(i)] = [df[i]['clock'],df[i]['size']]
+    return data
         
 def main():
     level = logging.ERROR
     logging.basicConfig(format='[%(levelname)s] %(message)s', level=level)
-    rqsize_npz = sys.argv[1]
+    rqsize_h5 = sys.argv[1]
     tracer_tgz = sys.argv[2]
     if 'PARALLEL' in os.environ:
         parallel = int(os.environ['PARALLEL'])
         data = load_tracer_tgz_in_parallel(tracer_tgz,parallel)
     else:
         data = load_tracer_tgz(tracer_tgz)
-    with open(rqsize_npz, 'wb') as f:
-        np.savez(f, **data)
+    with h5py.File(rqsize_h5, "w") as f:
+        for k in data:
+            df = f.create_dataset(k, np.shape(data[k]), compression="gzip")
+            df = data[k]
 
 if __name__ == '__main__':
     main()

@@ -13,7 +13,7 @@ include sysbench.mk
 include batch.mk
 include tracer.mk
 
-all_npz: $(ALL_NPZ)
+all_hdf5: $(ALL_HDF5)
 
 i80/status.html: src/plotly/status.py sysbench.csv batch.csv config.json
 	./$<
