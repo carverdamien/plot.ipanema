@@ -2,3 +2,6 @@ parse
 seaborn
 plotly
 h5py
+tqdm
+python-intervals
+

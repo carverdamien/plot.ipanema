@@ -18,7 +18,7 @@ def _compute_overload_iterval(clock, size):
     if np.sum(sel_overloaded) == 0:
         # Never overloaded
         return  np.array([[],[]])
-    sel_overloaded_next = np.concatenate((np.array([False]), sel_0[:-1]))
+    sel_overloaded_next = np.concatenate((np.array([False]), sel_overloaded[:-1]))
     overloaded_iterval = [clock[sel_overloaded], clock[sel_overloaded_next]]
     return overloaded_iterval
 

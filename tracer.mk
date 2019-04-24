@@ -7,10 +7,13 @@ endif
 ifndef IDLE_ITERVAL_HDF5
 IDLE_ITERVAL_HDF5=$(RQSIZE_HDF5:%/rqsize.hdf5=%/idle_interval.hdf5)
 endif
-ifndef OVERLOADED_ITERVAL_HDF5
-OVERLOADED_ITERVAL_HDF5=$(RQSIZE_HDF5:%/rqsize.hdf5=%/overload_interval.hdf5)
+ifndef OVERLOAD_ITERVAL_HDF5
+OVERLOAD_ITERVAL_HDF5=$(RQSIZE_HDF5:%/rqsize.hdf5=%/overload_interval.hdf5)
 endif
-ALL_HDF5+=$(RQSIZE_HDF5) $(IDLE_ITERVAL_HDF5) $(OVERLOADED_ITERVAL_HDF5)
+ifndef NOTWC_ITERVAL_HDF5
+NOTWC_ITERVAL_HDF5=$(RQSIZE_HDF5:%/rqsize.hdf5=%/notwc_interval.hdf5)
+endif
+ALL_HDF5+=$(RQSIZE_HDF5) $(IDLE_ITERVAL_HDF5) $(OVERLOAD_ITERVAL_HDF5) $(NOTWC_ITERVAL_HDF5)
 
 %/rqsize.hdf5: %/tracer.tgz | ./src/parse_rqsize.py
 	./src/parse_rqsize.py $@.tmp $<
@@ -22,6 +25,10 @@ ALL_HDF5+=$(RQSIZE_HDF5) $(IDLE_ITERVAL_HDF5) $(OVERLOADED_ITERVAL_HDF5)
 
 %/overload_interval.hdf5: %/rqsize.hdf5 | ./src/overload_interval.py
 	./src/overload_interval.py $@.tmp $<
+	mv $@.tmp $@
+
+%/notwc_interval.hdf5: %/idle_interval.hdf5 %/overload_interval.hdf5 | ./src/notwc_interval.py
+	./src/notwc_interval.py $@.tmp $^
 	mv $@.tmp $@
 
 # i80/all_idle_time: $(IDLE_TIME_NPZ)
