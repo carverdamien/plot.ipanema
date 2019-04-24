@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import intervals, h5py, sys, itertools
-from tqdm import tqdm
+import intervals, h5py, sys, itertools, os
+from multiprocessing import Pool
+import numpy as np
 
 def length(i):
     l = 0
@@ -8,17 +9,21 @@ def length(i):
         l += e.upper - e.lower
     return l
 
-def data_to_intervals(data):
+def data_to_intervals(args):
+    cpu, data = args
     i = intervals.empty()
-    for a,b,_ in itertools.zip_longest(data[0], data[1], tqdm(range(len(data[0])))):
+    # for a,b,_ in itertools.zip_longest(data[0], data[1], tqdm(range(len(data[0])))):
+    for a,b in itertools.zip_longest(data[0], data[1]):
         i = i | intervals.closed(a,b)
-    return i
+    return [cpu, i]
 
 def h5_to_intervals(path):
     with h5py.File(path, 'r') as data:
+        p = Pool(48)
+        df = p.map(data_to_intervals,[[cpu, np.array(data[cpu])] for cpu in data])
         return {
-            cpu : data_to_intervals(data[cpu])
-            for cpu in data
+            e[0]:e[1]
+            for e in df
         }
 
 def intervals_to_data(i):
@@ -38,8 +43,9 @@ def main():
     notwc_h5 = sys.argv[1]
     idle_h5 = sys.argv[2]
     overload_h5 = sys.argv[3]
-    print('Loading idle and overload into intervals')
+    print('Loading idle into intervals')
     idle = h5_to_intervals(idle_h5)
+    print('Loading overload into intervals')
     overload = h5_to_intervals(overload_h5)
     print('Computing union_overload')
     union_overload = intervals.empty()
