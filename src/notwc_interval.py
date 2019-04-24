@@ -45,7 +45,11 @@ def data_to_h5(path, data):
     with h5py.File(path, 'w') as f:
         for cpu in data:
             f.create_dataset(cpu,data=data[cpu],compression="gzip",dtype='i8')
-    
+
+def intersect(args):
+    key,a,b = args
+    return [key, a & b]
+        
 def main():
     notwc_h5 = sys.argv[1]
     idle_h5 = sys.argv[2]
@@ -59,10 +63,16 @@ def main():
     for cpu in overload:
         union_overload = union_overload | overload[cpu]
     print('Computing notwc[cpu] = idle[cpu] & union_overload')
+    p = Pool(48)
+    df = p.map(intersect, [[cpu, idle[cpu], union_overload] for cpu in idle])
     notwc = {
-        cpu : idle[cpu] & union_overload
-        for cpu in idle
+        e[0]:e[1]
+        for e in df
     }
+    # notwc = {
+    #     cpu : idle[cpu] & union_overload
+    #     for cpu in idle
+    # }
     print('Saving notwc into hdf5')
     data = intervals_to_data(notwc)
     data_to_h5(notwc_h5, data)
