@@ -40,6 +40,7 @@ def intervals_to_data(i):
         for e in i[cpu]:
             data[cpu][0].append(e.lower)
             data[cpu][1].append(e.upper)
+    return data
     
 def data_to_h5(path, data):
     with h5py.File(path, 'w') as f:
