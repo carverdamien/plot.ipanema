@@ -7,6 +7,9 @@ def parse_tracer_file(f):
     data = {k:[] for k in ['clock', 'pid', 'size', 'op']}
     for l in f.readlines():
         r = p.parse(l.decode("utf-8")).named
+        if r is None:
+            logging.error('r is None: {}'.format(l))
+            continue
         for k in r:
             data[k].append(int(r[k]))
     return data
@@ -54,8 +57,6 @@ def main():
     with h5py.File(rqsize_h5, "w") as f:
         for k in data:
             f.create_dataset(k,data=data[k],compression="gzip",dtype='i8')
-            #df = f.create_dataset(k, np.shape(data[k]), compression="gzip", dtype='i8')
-            #df = data[k]
 
 if __name__ == '__main__':
     main()

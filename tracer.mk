@@ -9,9 +9,9 @@ endif
 # endif
 ALL_HDF5+=$(RQSIZE_HDF5) # $(IDLE_TIME_NPZ)
 
-%/rqsize.hdf5: %/tracer.tgz ./src/parse_rqsize.py
-	rm -f $@
-	./src/parse_rqsize.py $@ $<
+%/rqsize.hdf5: %/tracer.tgz | ./src/parse_rqsize.py
+	./src/parse_rqsize.py $@.tmp $<
+	mv $@.tmp $@
 
 # %/idle_time.npz: %/rqsize.npz ./src/idle_time.py
 # 	./src/idle_time.py $@ $<
