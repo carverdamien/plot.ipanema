@@ -17,6 +17,13 @@ def data_to_intervals(args):
         i = i | intervals.closed(a,b)
     return [cpu, i]
 
+def data_to_intervals(args):
+    cpu, data = args
+    # for a,b,_ in itertools.zip_longest(data[0], data[1], tqdm(range(len(data[0])))):
+    i = [(True,a,b,True) for a,b in itertools.zip_longest(data[0], data[1])]
+    i = intervals.from_data(i)
+    return [cpu, i]
+
 def h5_to_intervals(path):
     with h5py.File(path, 'r') as data:
         p = Pool(48)
