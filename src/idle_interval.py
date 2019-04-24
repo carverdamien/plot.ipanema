@@ -17,7 +17,7 @@ def _compute_idle_iterval(clock, size):
     sel_0 = size == 0
     if np.sum(sel_0) == 0:
         # Never idle
-        return  np.array([])
+        return  np.array([[],[]])
     sel_0_next = np.concatenate((np.array([False]), sel_0[:-1]))
     assert np.sum(size[sel_0_next] == 0) == 0
     idle_iterval = [clock[sel_0_next], clock[sel_0]]
