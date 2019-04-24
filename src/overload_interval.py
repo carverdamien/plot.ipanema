@@ -19,7 +19,7 @@ def _compute_overload_iterval(clock, size):
         # Never overloaded
         return  np.array([[],[]])
     sel_overloaded_next = np.concatenate((np.array([False]), sel_0[:-1]))
-    overloaded_iterval = [clock[sel_overloaded_next], clock[sel_overloaded]]
+    overloaded_iterval = [clock[sel_overloaded], clock[sel_overloaded_next]]
     return overloaded_iterval
 
 def drop_last_zero(clock, size):

@@ -20,7 +20,7 @@ def _compute_idle_iterval(clock, size):
         return  np.array([[],[]])
     sel_0_next = np.concatenate((np.array([False]), sel_0[:-1]))
     assert np.sum(size[sel_0_next] == 0) == 0
-    idle_iterval = [clock[sel_0_next], clock[sel_0]]
+    idle_iterval = [clock[sel_0], clock[sel_0_next]]
     return idle_iterval
 
 def drop_last_zero(clock, size):
