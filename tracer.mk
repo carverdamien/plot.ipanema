@@ -7,7 +7,10 @@ endif
 ifndef IDLE_ITERVAL_HDF5
 IDLE_ITERVAL_HDF5=$(RQSIZE_HDF5:%/rqsize.hdf5=%/idle_interval.hdf5)
 endif
-ALL_HDF5+=$(RQSIZE_HDF5) $(IDLE_ITERVAL_HDF5)
+ifndef OVERLOADED_ITERVAL_HDF5
+OVERLOADED_ITERVAL_HDF5=$(RQSIZE_HDF5:%/rqsize.hdf5=%/idle_interval.hdf5)
+endif
+ALL_HDF5+=$(RQSIZE_HDF5) $(IDLE_ITERVAL_HDF5) $(OVERLOADED_ITERVAL_HDF5)
 
 %/rqsize.hdf5: %/tracer.tgz | ./src/parse_rqsize.py
 	./src/parse_rqsize.py $@.tmp $<
@@ -15,6 +18,10 @@ ALL_HDF5+=$(RQSIZE_HDF5) $(IDLE_ITERVAL_HDF5)
 
 %/idle_interval.hdf5: %/rqsize.hdf5 | ./src/idle_time.py
 	./src/idle_interval.py $@.tmp $<
+	mv $@.tmp $@
+
+%/overload_interval.hdf5: %/rqsize.hdf5 | ./src/overload_time.py
+	./src/overload_interval.py $@.tmp $<
 	mv $@.tmp $@
 
 # i80/all_idle_time: $(IDLE_TIME_NPZ)
