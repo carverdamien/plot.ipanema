@@ -6,10 +6,12 @@ def parse_tracer_file(f):
     p = parse.compile("""{clock:d} RQ_SIZE {pid:d} {size:d} {op:d}""")
     data = {k:[] for k in ['clock', 'pid', 'size', 'op']}
     for l in f.readlines():
-        r = p.parse(l.decode("utf-8")).named
+        r = p.parse(l.decode("utf-8"))
         if r is None:
             logging.error('r is None: {}'.format(l))
             continue
+        else:
+            r = r.named
         for k in r:
             data[k].append(int(r[k]))
     return data
