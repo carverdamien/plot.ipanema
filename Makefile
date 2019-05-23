@@ -11,7 +11,7 @@ default: push
 
 include sysbench.mk
 include batch.mk
-include tracer.mk
+# include tracer.mk
 
 all_hdf5: $(ALL_HDF5)
 
