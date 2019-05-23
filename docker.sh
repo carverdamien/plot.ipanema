@@ -16,6 +16,6 @@ docker run \
        -v ${PWD}/index.html:/workdir/index.html \
        -v ${PWD}/pretty_label.json:/workdir/pretty_label.json \
        -ti --rm \
-       -p 80${PORT:-:80} \
+       -p ${PORT:-80:80} \
        ${IMAGE} \
        "$@"
