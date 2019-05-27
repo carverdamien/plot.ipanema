@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import pandas as pd
+import numpy as np
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import plotly.graph_objs as go
 
 def save(output, df):    
-    ticktext = df[df.columns[0]]
+    ticktext = df.index
     tickvals = np.arange(len(ticktext))
     data = [
         go.Bar(
@@ -13,7 +14,7 @@ def save(output, df):
             y=df[name],
             name=name,
             )
-        for name in df.columns[1:]
+        for name in df.columns
         ]
     layout = go.Layout(
         barmode='stack',
@@ -46,4 +47,6 @@ if __name__ == '__main__':
             ['sched2-128tsks',3,3,3,3],
         ],
     }
-    save('stack.html', pd.DataFrame(**dummydf))
+    df = pd.DataFrame(**dummydf)
+    df = df.set_index('Scheduler Tasks')
+    save('stack.html', df)
