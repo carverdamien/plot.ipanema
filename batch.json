@@ -7,6 +7,11 @@
 	    "new" : "ule"
 	},
 	{
+	    "op" : "drop",
+	    "key" : "kernel",
+	    "val" : "ule"
+	},
+	{
 	    "op" : "cas",
 	    "key" : "kernel",
 	    "old" : "4.19.0-ipanema-g5ac2a058435c",
