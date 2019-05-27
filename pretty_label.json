@@ -33,5 +33,14 @@
     "ule_wwc scheduling policy,ule_wwc scheduling policy":"ule_wwc",
     
     "ule_wwc_v3 scheduling policy":"ule_wwc_v3",
-    "ule_wwc_v3 scheduling policy,ule_wwc_v3 scheduling policy":"ule_wwc_v3"
+    "ule_wwc_v3 scheduling policy,ule_wwc_v3 scheduling policy":"ule_wwc_v3",
+
+    "ule_wwc_v4 scheduling policy":"ule_wwc_v4",
+    "ule_wwc_v4 scheduling policy,ule_wwc_v4 scheduling policy":"ule_wwc_v4",
+
+    "ule scheduling policy checksum=13028": "ule_13028",
+    "ule scheduling policy checksum=13028,ule scheduling policy checksum=13028": "ule_13028",
+
+    "ule_wwc scheduling policy checksum=14325": "ule_wwc_14325",
+    "ule_wwc scheduling policy checksum=14325,ule_wwc scheduling policy checksum=14325": "ule_wwc_14325"
 }
