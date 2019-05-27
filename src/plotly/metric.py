@@ -2,6 +2,7 @@
 
 from status import remove_unstable
 from common import *
+from update_rows import update_rows
 import argparse, logging, itertools, sys, os, json
 import pandas as pd
 import numpy as np
@@ -126,13 +127,6 @@ def save(config, metric, output, df):
     )
     fig = go.Figure(data=data, layout=layout)
     plot(fig, filename=output, auto_open=False)
-
-def update_rows(updates, df):
-    for op in updates:
-        assert(op["op"] == "cas")
-        sel = df[op["key"]] == op["old"]
-        df[op["key"]][sel] = op["new"]
-    return df
     
 def main():
     args = parseCmdLine()

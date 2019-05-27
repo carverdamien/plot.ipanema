@@ -2,6 +2,7 @@
 
 from status import remove_unstable
 from common import *
+from update_rows import update_rows
 import argparse, logging, itertools, sys, os, json
 import pandas as pd
 import numpy as np
@@ -109,13 +110,6 @@ def save(config, metric, output, df):
     fig.set_size_inches(6.4*3, 4.8*1.2)
     fig.savefig(output)
 
-def update_rows(updates, df):
-    for op in updates:
-        assert(op["op"] == "cas")
-        sel = df[op["key"]] == op["old"]
-        df[op["key"]][sel] = op["new"]
-    return df
-    
 def main():
     args = parseCmdLine()
 
