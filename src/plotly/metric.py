@@ -127,6 +127,13 @@ def save(config, metric, output, df):
     fig = go.Figure(data=data, layout=layout)
     plot(fig, filename=output, auto_open=False)
 
+def update_rows(updates, df):
+    for op in updates:
+        assert(op["op"] == "cas")
+        sel = df[op["key"]] == op["old"]
+        df[op["key"]][sel] = op["new"]
+    return df
+    
 def main():
     args = parseCmdLine()
 
@@ -151,6 +158,7 @@ def main():
     else:
         with open(args.config) as f:
             config = json.load(f)
+            df = update_rows(config['update_rows'], df)
             save(config, metric, args.output, df)
 
 if __name__ == '__main__':

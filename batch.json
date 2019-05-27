@@ -1,4 +1,24 @@
 {
+    "update_rows" : [
+	{
+	    "op" : "cas",
+	    "key" : "kernel",
+	    "old" : "4.19.0-ipanema-g5ac2a058435c",
+	    "new" : "[5ac2a058-63c6e485]"
+	},
+	{
+	    "op" : "cas",
+	    "key" : "kernel",
+	    "old" : "4.19.0-ipanema-gb314fb0c664c",
+	    "new" : "[5ac2a058-63c6e485]"
+	},
+	{
+	    "op" : "cas",
+	    "key" : "kernel",
+	    "old" : "4.19.0-ipanema-gd88ded196cf4",
+	    "new" : "[5ac2a058-63c6e485]"
+	}
+    ],
     "xkey" : "tasks",
     "keys" : [
         "machine",
