@@ -3,6 +3,12 @@
 	{
 	    "op" : "cas",
 	    "key" : "kernel",
+	    "old" : "4.19.0-ipanema-gdc8203891681",
+	    "new" : "ule"
+	},
+	{
+	    "op" : "cas",
+	    "key" : "kernel",
 	    "old" : "4.19.0-ipanema-g5ac2a058435c",
 	    "new" : "[5ac2a058-63c6e485]"
 	},
