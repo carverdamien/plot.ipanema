@@ -1,1 +1,5 @@
-../plotly/deQ_stack.py
+#!/usr/bin/env python3
+from stack.common import deQ_stack
+from stack.seaborn.stack import save
+if __name__ == '__main__':
+    deQ_stack.main(save)
