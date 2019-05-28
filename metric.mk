@@ -4,7 +4,7 @@ SCHED_MONITOR_METRICS=sched_total_ns idle_total_ns fair_total_ns ipanema_total_n
 COMMON_METRICS=$(SCHED_DEBUG_METRICS) $(SCHED_MONITOR_METRICS) $(STACK_METRICS)
 define metric
 ./src/plotly/$1.py:
-	ln -s ./metric.py $$@
+	-ln -s ./metric.py $$@
 ./src/seaborn/$1.py:
-	ln -s ./metric.py $$@
+	-ln -s ./metric.py $$@
 endef
