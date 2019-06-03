@@ -12,6 +12,36 @@
 	    "val" : "ule"
 	},
 	{
+	    "op" : "drop",
+	    "key" : "client_sched",
+	    "val" : "cfs_hwwc scheduling policy checksum=14607"
+	},
+	{
+	    "op" : "drop",
+	    "key" : "client_sched",
+	    "val" : "cfs_wwc_dumb_new_unblock scheduling policy"
+	},
+	{
+	    "op" : "drop",
+	    "key" : "client_sched",
+	    "val" : "cfs_wwc_flat_4msLB scheduling policy"
+	},
+	{
+	    "op" : "drop",
+	    "key" : "client_sched",
+	    "val" : "cfs_wwc_flat_4msLB_lock scheduling policy"
+	},
+	{
+	    "op" : "drop",
+	    "key" : "client_sched",
+	    "val" : "cfs_wwc_lookalike scheduling policy"
+	},
+	{
+	    "op" : "drop",
+	    "key" : "client_sched",
+	    "val" : "cfs_wwc_flat_v2 scheduling policy"
+	},
+	{
 	    "op" : "cas",
 	    "key" : "kernel",
 	    "old" : "4.19.0-ipanema-g5ac2a058435c",
