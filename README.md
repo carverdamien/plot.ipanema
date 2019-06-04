@@ -1,6 +1,6 @@
 # plot.ipanema
 
-Last update: Mon Jun  3 12:24:14 UTC 2019
+Last update: Tue Jun  4 05:43:57 UTC 2019
 
 * i80/mongo/v4.1.8/min_latency [html](i80/mongo/v4.1.8/min_latency.html) [pdf](i80/mongo/v4.1.8/min_latency.pdf)
 * i80/mongo/v4.1.8/max_latency [html](i80/mongo/v4.1.8/max_latency.html) [pdf](i80/mongo/v4.1.8/max_latency.pdf)
