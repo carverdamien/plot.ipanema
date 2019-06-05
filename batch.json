@@ -58,6 +58,11 @@
 	    "key" : "kernel",
 	    "old" : "4.19.0-ipanema-gd88ded196cf4",
 	    "new" : "[5ac2a058-63c6e485]"
+	},
+	{
+	    "op" : "drop",
+	    "key" : "kernel",
+	    "val" : "[5ac2a058-63c6e485]"
 	}
     ],
     "xkey" : "tasks",
