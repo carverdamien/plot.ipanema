@@ -98,27 +98,36 @@ class SchedMonitor:
         return all_data
 
 class SchedDebug:
-    SCHED_DEBUG_CLK_EXPECTED_OUTPUT="""
+    SCHED_DEBUG_CLK_EXPECTED_OUTPUT = """
 ktime                                   : {ktime}
 sched_clk                               : {sched_clk}
 cpu_clk                                 : {cpu_clk}
 """
-    SCHED_DEBUG_CPU_EXPECTED_OUTPUT="""
-  .enQ.no_reason                 : {enQ_no_reason}
-  .enQ.new                       : {enQ_new}
-  .enQ.wakeup                    : {enQ_wakeup}
-  .enQ.wakeup_mig                : {enQ_wakeup_mig}
-  .enQ.lb_mig                    : {enQ_lb_mig}
-  .deQ.no_reason                 : {deQ_no_reason}
-  .deQ.sleep                     : {deQ_sleep}
-  .enQ.wc.no_reason              : {enQ_wc_no_reason}
-  .enQ.wc.new                    : {enQ_wc_new}
-  .enQ.wc.wakeup                 : {enQ_wc_wakeup}
-  .enQ.wc.wakeup_mig             : {enQ_wc_wakeup_mig}
-  .enQ.wc.lb_mig                 : {enQ_wc_lb_mig}
-  .deQ.wc.no_reason              : {deQ_wc_no_reason}
-  .deQ.wc.sleep                  : {deQ_wc_sleep}
-"""
+    SCHED_DEBUG_CPU_EXPECTED_OUTPUT = """  .{key:S}{:s}: {value:S}"""
+    SCHED_DEBUG_CPU_EXPECTED_KEYS = [
+        'enQ.no_reason',
+        'enQ.new',
+        'enQ.wakeup',
+        'enQ.wakeup_mig_l0',
+        'enQ.wakeup_mig_l1',
+        'enQ.wakeup_mig_l2',
+        'enQ.lb_mig_l0',
+        'enQ.lb_mig_l1',
+        'enQ.lb_mig_l2',
+        'deQ.no_reason',
+        'deQ.sleep',
+        'enQ.wc.no_reason',
+        'enQ.wc.new',
+        'enQ.wc.wakeup',
+        'enQ.wc.wakeup_mig_l0',
+        'enQ.wc.wakeup_mig_l1',
+        'enQ.wc.wakeup_mig_l2',
+        'enQ.wc.lb_mig_l0',
+        'enQ.wc.lb_mig_l1',
+        'enQ.wc.lb_mig_l2',
+        'deQ.wc.no_reason',
+        'deQ.wc.sleep',
+    ]
     def _parse_path(self, path):
         st_mtime = os.stat(path).st_mtime
         data = {
@@ -131,9 +140,11 @@ cpu_clk                                 : {cpu_clk}
                 data[k] = float(r.named[k])
         with open(path, 'r') as fp:
             for r in parse.findall(self.SCHED_DEBUG_CPU_EXPECTED_OUTPUT,fp.read()):
-                for k in r.named:
-                    v = int(r.named[k])
-                    data[k] = data.get(k,0) + v
+                key = r.named['key']
+                if key not in self.SCHED_DEBUG_CPU_EXPECTED_KEYS:
+                    continue
+                value = float(r.named['value'])
+                data[key] = data.get(key,0) + value
             return data
     def parse(self, dirPath):
         values = []
@@ -197,7 +208,7 @@ class Batch:
         
 class Sysbench:
     SYSBENCH_EXPECTED_OUTPUT="""
-Number of threads:{:s}{clients}
+Number of threads:{:s}{clients:d}
 {}
 Throughput:
     events/s (eps):{:s}{throughput}
