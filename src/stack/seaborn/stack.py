@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logging
 import pandas as pd
 import numpy as np
 import matplotlib as mpl

@@ -6,8 +6,8 @@ import argparse, logging, itertools, sys, os, json
 import pandas as pd
 import numpy as np
 
-ENQ_STACK = ['enQ_no_reason', 'enQ_new', 'enQ_wakeup', 'enQ_wakeup_mig', 'enQ_lb_mig']
-ENQ_WC_STACK = ['enQ_wc_no_reason', 'enQ_wc_new', 'enQ_wc_wakeup', 'enQ_wc_wakeup_mig', 'enQ_wc_lb_mig']
+ENQ_STACK = ['enQ.no_reason', 'enQ.new', 'enQ.wakeup', 'enQ.wakeup_mig_l0', 'enQ.wakeup_mig_l1', 'enQ.wakeup_mig_l2', 'enQ.lb_mig_l0', 'enQ.lb_mig_l1', 'enQ.lb_mig_l2']
+ENQ_WC_STACK = ['enQ.wc.no_reason', 'enQ.wc.new', 'enQ.wc.wakeup', 'enQ.wc.wakeup_mig_l0', 'enQ.wc.wakeup_mig_l1', 'enQ.wc.wakeup_mig_l2', 'enQ.wc.lb_mig_l0', 'enQ.wc.lb_mig_l1', 'enQ.wc.lb_mig_l2']
 def mystack():
     for i in itertools.zip_longest(ENQ_STACK, ENQ_WC_STACK):
         for j in itertools.chain(i):
@@ -93,5 +93,8 @@ def main(save):
     with open(args.config) as f:
         config = json.load(f)
         df = update_rows(config['update_rows'], df)
-        df = stacked(config, df)
-        save(args.output, df)
+        if len(df) == 0:
+            logging.error('Empty DataFrame')
+        else:
+            df = stacked(config, df)
+            save(args.output, df)

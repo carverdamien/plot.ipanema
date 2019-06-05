@@ -6,8 +6,8 @@ import argparse, logging, itertools, sys, os, json
 import pandas as pd
 import numpy as np
 
-ENQ_STACK = ['deQ_no_reason', 'deQ_sleep']
-ENQ_WC_STACK = ['deQ_wc_no_reason', 'deQ_wc_sleep']
+ENQ_STACK = ['deQ.no_reason', 'deQ.sleep']
+ENQ_WC_STACK = ['deQ.wc.no_reason', 'deQ.wc.sleep']
 def mystack():
     for i in itertools.zip_longest(ENQ_STACK, ENQ_WC_STACK):
         for j in itertools.chain(i):
@@ -93,5 +93,8 @@ def main(save):
     with open(args.config) as f:
         config = json.load(f)
         df = update_rows(config['update_rows'], df)
-        df = stacked(config, df)
-        save(args.output, df)
+        if len(df) == 0:
+            logging.error('Empty DataFrame')
+        else:
+            df = stacked(config, df)
+            save(args.output, df)

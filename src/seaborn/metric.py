@@ -129,12 +129,12 @@ def main():
     logging.info('metric={}'.format(metric))
     
     df = remove_unstable(pd.read_csv(args.inputFile), 'st_mtime')
-    if(len(df) == 0):
-        logging.error('Empty dataframe')
-    else:
-        with open(args.config) as f:
-            config = json.load(f)
-            df = update_rows(config['update_rows'], df)
+    with open(args.config) as f:
+        config = json.load(f)
+        df = update_rows(config['update_rows'], df)
+        if(len(df) == 0):
+            logging.error('Empty dataframe')
+        else:
             save(config, metric, args.output, df)
 
 if __name__ == '__main__':

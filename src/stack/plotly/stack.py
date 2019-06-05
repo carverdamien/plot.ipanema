@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
+import logging
 import pandas as pd
 import numpy as np
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import plotly.graph_objs as go
 
-def save(output, df):    
+def save(output, df):
+    if len(df) == 0:
+        logging.error('Empty DataFrame')
     ticktext = df.index
     tickvals = np.arange(len(ticktext))
     data = [

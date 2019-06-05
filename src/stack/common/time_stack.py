@@ -34,7 +34,7 @@ def stacked(config, df):
         df[header] = 10**-3 * df[header]
     for header in SCHED_MONITOR:
         df[header] = 10**-9 / N_CPU * df[header]
-    df.dropna(inplace=True)
+    # df.dropna(inplace=True)
     sel = df['ktime'] < (df['idle_total_ns'] + df['sched_total_ns'])
     count = np.sum(sel)
     if count > 0:
@@ -91,5 +91,8 @@ def main(save):
     with open(args.config) as f:
         config = json.load(f)
         df = update_rows(config['update_rows'], df)
-        df = stacked(config, df)
-        save(args.output, df)
+        if len(df) == 0:
+            logging.error('Empty DataFrame')
+        else:
+            df = stacked(config, df)
+            save(args.output, df)
