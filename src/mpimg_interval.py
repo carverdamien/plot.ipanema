@@ -9,7 +9,7 @@ white = np.array([1,1,1])
 height = 1080
 height = 160
 width  = 1920
-width *= 20
+# width *= 20
 image  = np.zeros((height, width,3))
 
 # Example
@@ -17,7 +17,15 @@ image  = np.zeros((height, width,3))
 # j = width//2
 # image[i,j,:] = white
 
-f = '/mnt/data/damien/storage/i80/hackbench/1.0-3/3d5625eec031d249757ecc716473030a/log/5nk2jIomejEZD6/sched_monitor/idle_interval.hdf5'
+# 1000 tasks
+# Linux
+# f = '/mnt/data/damien/storage/i80/hackbench/1.0-3/78212401e041708ec43e9987bf97dddf/log/TbtMRFxSJHx135/sched_monitor/idle_interval.hdf5'
+# ule
+# f = '/mnt/data/damien/storage/i80/hackbench/1.0-3/d793ff3807b6e99742bddc7e9aefd57f/log/iQ9WNzfx3ULLRn/sched_monitor/idle_interval.hdf5'
+# ule_wwc_v3
+f = '/mnt/data/damien/storage/i80/hackbench/1.0-3/dc0a3f9e678ee5e49e426121e61ea8bb/log/rVHsJsy8uW2jO3/sched_monitor/idle_interval.hdf5'
+# cfs_wwc
+# f = '/mnt/data/damien/storage/i80/hackbench/1.0-3/3d5625eec031d249757ecc716473030a/log/5nk2jIomejEZD6/sched_monitor/idle_interval.hdf5'
 h=h5py.File(f, 'r')
 data = [np.array(h[cpu]) for cpu in sorted(list(h.keys()), key=lambda e:int(e))]
 h.close()
