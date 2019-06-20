@@ -63,6 +63,11 @@
 	    "op" : "drop",
 	    "key" : "kernel",
 	    "val" : "[5ac2a058-63c6e485]"
+	},
+	{
+	    "op" : "drop",
+	    "key" : "kernel",
+	    "val" : "4.19.0-ipanema-g2fbd041a48ae"
 	}
     ],
     "xkey" : "clients",
